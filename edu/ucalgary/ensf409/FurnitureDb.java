@@ -127,7 +127,7 @@ public class FurnitureDb{
                 ex.printStackTrace();
             } 
     }
-    
+
     public int priceCheck(String table){   
         List<Int> pricesList = new ArrayList<Int>();
 
@@ -136,7 +136,7 @@ public class FurnitureDb{
         String query = "SELECT Price FROM " + table;
         results = stmt.executeQuery(query);
             while(results.next()){
-                prices.add(results.getInt("Price"));
+                pricesList.add(results.getInt("Price"));
             }
         stmt.close();
         }
