@@ -1,6 +1,5 @@
 /**
  @author 
-
  @version
  
  @since 1.0
@@ -127,5 +126,32 @@ public class FurnitureDb{
             {
                 ex.printStackTrace();
             } 
+    }
+    
+    public int priceCheck(String table){   
+        List<Int> pricesList = new ArrayList<Int>();
+
+        try{
+        Statement stmt = dbConnect.createStatement();
+        String query = "SELECT Price FROM " + table;
+        results = stmt.executeQuery(query);
+            while(results.next()){
+                prices.add(results.getInt("Price"));
+            }
+        stmt.close();
+        }
+
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        int[] pricesArray = pricesList.toArray();
+        int lowest = pricesArray[0];
+        for(int i = 0; i < pricesArray.length; i++){
+            if (lowest > pricesArray[i]){
+                lowest = pricesArray[i];
+            }
+        }
+        return lowest;
     }
 }
