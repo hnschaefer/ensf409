@@ -33,7 +33,9 @@ public class UserIO{
     public int getQuantity(){
         return this.quantity;
     }
-
+    /**
+    * @param args Handles a single command-line argument 
+    */
     public static void main(String[] args){
         UserIO input = new UserIO(args[0], args[1], args[2]);
     }
