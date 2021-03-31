@@ -18,7 +18,7 @@ public class Filing{
     public int price;
     public int manuID;
 
-    public Filing(String id, String type, boolean rails, boolean drawers, boolean cabinet, int price, int manuID){
+    public Filing(String id, String type, boolean rails, boolean drawers, boolean cabinet, int price, String manuID){
         this.id = id;
         this.type = type;
         this.rails = rails;

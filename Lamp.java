@@ -17,7 +17,7 @@ public class Lamp{
     public int price;
     public int manuID;
 
-    public Lamp(String id, String type, boolean base, boolean bulb, int price, int manuID){
+    public Lamp(String id, String type, boolean base, boolean bulb, int price, String manuID){
         this.id = id;
         this.type = type;
         this.base = base;
