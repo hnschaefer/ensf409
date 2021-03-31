@@ -1,7 +1,8 @@
 /**
- @author 
+ @author Heidi Schaefer <a 
+    href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
  
- @version
+ @version 1.1
  
  @since 1.0
 */
