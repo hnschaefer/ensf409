@@ -57,7 +57,7 @@ public class FileIO{
         StringBuffer originalRequest = new StringBuffer("\n" + "Original Request: " + type + " " + category + ", " + quantity);
         
         String itemsOrdered = "\n" +"Items Ordered";
-        for (int i = 0; i < itemIDs.length-1; i++)
+        for (int i = 0; i < itemIDs.length; i++)
         {
             itemsOrdered += "\n" + "ID: " + itemIDs[i];
         }
