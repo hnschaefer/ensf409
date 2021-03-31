@@ -1,6 +1,8 @@
 /**
- @author 
- @version
+ @author Heidi Schaefer <a 
+    href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
+
+ @version 1.2
  
  @since 1.0
 */
@@ -23,8 +25,8 @@ public class FurnitureDb{
         this.PASSWORD = PASSWORD;
     }
 
+    //Establish database connection
     public void initializeConnection(){
-        //connect to database
         try{
             dbConnect = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
         }
@@ -32,6 +34,10 @@ public class FurnitureDb{
             e.printStackTrace();
         }
     }
+
+    //Removal of furniture items from database
+    //To be used once items have been placed in order form
+    //And are no longer in inventory
 
     public void removeChairFromInventory(String id){
         try{
@@ -101,57 +107,142 @@ public class FurnitureDb{
         }
     }
 
-    public void insertNewChair (String idNumber, String type, String legs, String arms, String seat, String cushion, String price, String manufacturerId){
-        try 
-            {
-                // first create the query itself as a string, it looks the same as the sql
-                String query = "INSERT INTO teacher (ID, Type, Legs, Arms, Seat, Cushion, Price, ManuID) VALUES (?,?,?,?,?,?,?)";
-                PreparedStatement stmt = myConnect.prepareStatement(query); // send query to PreparedStatement
+    //Creation of ArrayLists of furniture categories
+    //Used for searching through categories and finding desired types
 
-                stmt.setString(1, idNumber);
-                stmt.setString(2, type);
-                stmt.setString(3, legs);
-                stmt.setString(4, arms);
-                stmt.setString(5, seat);
-                stmt.setString(5, cushion);
-                stmt.setString(5, price);
-                stmt.setString(5, manufacturerId);
-
-                int rowCount = stmt.executeUpdate(); // updating the database, we are creating a transaction is the data base which is gonna update the data base
-                //System.out.println("Rows affected: " + rowCount);
-                
-                stmt.close(); // good practice to close
-            }
-            catch(SQLException ex)
-            {
-                ex.printStackTrace();
-            } 
-    }
-
-    public int priceCheck(String table){   
-        List<Int> pricesList = new ArrayList<Int>();
+    public String[] chairFinder(String category, String type, String quantity){
+        category = category.toLowerCase();
+        List<Chair> furnitureList = new ArrayList<Chair>();
+        boolean legs = false;
+        boolean arms = false;
+        boolean seat = false;
+        boolean cushion = false;
 
         try{
-        Statement stmt = dbConnect.createStatement();
-        String query = "SELECT Price FROM " + table;
-        results = stmt.executeQuery(query);
+            Statement stmt = dbConnect.createStatement();
+            String query = "SELECT * FROM inventory." + category;
+            results = stmt.executeQuery(query);
             while(results.next()){
-                pricesList.add(results.getInt("Price"));
+                if(results.getChar("Legs").equals('Y')){
+                    legs = true;
+                }
+                if(results.getChar("Arms").equals('Y')){
+                    arms = true;
+                }
+                if(results.getChar("Seat").equals('Y')){
+                    seat = true;
+                }
+                if(results.getChar("Cushion").equals('Y')){
+                    cushion = true;
+                }
+                if(results.getString("Type").equals(type)){
+                    furnitureList.add(new Chair(results.getString("ID"), results.getString("Type"), 
+                        legs, arms, seat, cushion, results.getInt("Price"), results.getString("ManuID")));
+                }
             }
-        stmt.close();
+            stmt.close();
         }
 
         catch(SQLException e){
             e.printStackTrace();
         }
+    }
 
-        int[] pricesArray = pricesList.toArray();
-        int lowest = pricesArray[0];
-        for(int i = 0; i < pricesArray.length; i++){
-            if (lowest > pricesArray[i]){
-                lowest = pricesArray[i];
+    public String[] deskFinder(String category, String type, String quantity){
+        category = category.toLowerCase();
+        List<Desk> furnitureList = new ArrayList<Desk>();
+        boolean legs = false;
+        boolean top = false;
+        boolean drawer = false;
+
+        try{
+            Statement stmt = dbConnect.createStatement();
+            String query = "SELECT * FROM inventory." + category;
+            results = stmt.executeQuery(query);
+            while(results.next()){
+                if(results.getChar("Legs").equals('Y')){
+                    legs = true;
+                }
+                if(results.getChar("Top").equals('Y')){
+                    top = true;
+                }
+                if(results.getChar("Drawer").equals('Y')){
+                    drawer = true;
+                }
+                if(results.getString("Type").equals(type)){
+                    furnitureList.add(new Chair(results.getString("ID"), results.getString("Type"), 
+                        legs, top, drawer, results.getInt("Price"), results.getString("ManuID")));
+                }
             }
+            stmt.close();
         }
-        return lowest;
+
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public String[] filingFinder(String category, String type, String quantity){
+        category = category.toLowerCase();
+        List<Filing> furnitureList = new ArrayList<Filing>();
+        boolean rails = false;
+        boolean drawers = false;
+        boolean cabinet = false;
+
+        try{
+            Statement stmt = dbConnect.createStatement();
+            String query = "SELECT * FROM inventory." + category;
+            results = stmt.executeQuery(query);
+            while(results.next()){
+                if(results.getChar("Rails").equals('Y')){
+                    rails = true;
+                }
+                if(results.getChar("Top").equals('Y')){
+                    drawers = true;
+                }
+                if(results.getChar("Drawer").equals('Y')){
+                    cabinet = true;
+                }
+                if(results.getString("Type").equals(type)){
+                    furnitureList.add(new Chair(results.getString("ID"), results.getString("Type"), 
+                        rails, drawers, cabinet, results.getInt("Price"), results.getString("ManuID")));
+                }
+            }
+            stmt.close();
+        }
+
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public String[] lampFinder(String category, String type, String quantity){
+        category = category.toLowerCase();
+        List<Lamp> furnitureList = new ArrayList<Lamp>();
+        boolean base = false;
+        boolean bulb = false;
+
+        try{
+            Statement stmt = dbConnect.createStatement();
+            String query = "SELECT * FROM inventory." + category;
+            results = stmt.executeQuery(query);
+            while(results.next()){
+                if(results.getChar("Base").equals('Y')){
+                    base = true;
+                }
+                if(results.getChar("Bulb").equals('Y')){
+                    bulb = true;
+                }
+                if(results.getString("Type").equals(type)){
+                    furnitureList.add(new Chair(results.getString("ID"), results.getString("Type"), 
+                        base, bulb, results.getInt("Price"), results.getString("ManuID")));
+                }
+            }
+            stmt.close();
+        }
+
+        catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 }
