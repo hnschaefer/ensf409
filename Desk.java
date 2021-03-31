@@ -16,14 +16,14 @@ public class Desk{
     public boolean top;
     public boolean drawer;
     public int price;
-    public int manuID;
+    public String manuID;
 
-    public Desk(String id, String type, boolean legs, boolean top, boolean drawer, int price, int manuID){
+    public Desk(String id, String type, boolean legs, boolean top, boolean drawer, int price, String manuID){
         this.id = id;
         this.type = type;
         this.legs = legs;
-        this.arms = top;
-        this.seat = drawer;
+        this.top = top;
+        this.drawer = drawer;
         this.price = price;
         this.manuID = manuID;
     }

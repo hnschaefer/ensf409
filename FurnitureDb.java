@@ -11,6 +11,7 @@ package edu.ucalgary.ensf409;
 
 import java.sql.*;
 import java.io.*;
+import java.util.*;
 
 public class FurnitureDb{
     public final String DBURL;
@@ -109,9 +110,9 @@ public class FurnitureDb{
 
     //Creation of ArrayLists of furniture with desired types
 
-    public List<Chair> chairFinder(String category, String type, String quantity){
+    public ArrayList<Chair> chairFinder(String category, String type, String quantity){
         category = category.toLowerCase();
-        List<Chair> furnitureList = new ArrayList<Chair>();
+        ArrayList<Chair> furnitureList = new ArrayList<Chair>();
         boolean legs = false;
         boolean arms = false;
         boolean seat = false;
@@ -122,21 +123,20 @@ public class FurnitureDb{
             String query = "SELECT * FROM inventory." + category;
             results = stmt.executeQuery(query);
             while(results.next()){
-                if(results.getChar("Legs").equals('Y')){
+                if(results.getString("Legs").equals("Y")){
                     legs = true;
                 }
-                if(results.getChar("Arms").equals('Y')){
+                if(results.getString("Arms").equals("Y")){
                     arms = true;
                 }
-                if(results.getChar("Seat").equals('Y')){
+                if(results.getString("Seat").equals("Y")){
                     seat = true;
                 }
-                if(results.getChar("Cushion").equals('Y')){
+                if(results.getString("Cushion").equals("Y")){
                     cushion = true;
                 }
                 if(results.getString("Type").equals(type)){
-                    furnitureList.add(new Chair(results.getString("ID"), results.getString("Type"), 
-                        legs, arms, seat, cushion, results.getInt("Price"), results.getString("ManuID")));
+                    furnitureList.add(new Chair(results.getString("ID"), results.getString("Type"), legs, arms, seat, cushion, results.getInt("Price"), results.getString("ManuID")));
                 }
             }
             stmt.close();
@@ -149,9 +149,9 @@ public class FurnitureDb{
         return furnitureList;
     }
 
-    public List<Desk> deskFinder(String category, String type, String quantity){
+    public ArrayList<Desk> deskFinder(String category, String type, String quantity){
         category = category.toLowerCase();
-        List<Desk> furnitureList = new ArrayList<Desk>();
+        ArrayList<Desk> furnitureList = new ArrayList<Desk>();
         boolean legs = false;
         boolean top = false;
         boolean drawer = false;
@@ -161,18 +161,17 @@ public class FurnitureDb{
             String query = "SELECT * FROM inventory." + category;
             results = stmt.executeQuery(query);
             while(results.next()){
-                if(results.getChar("Legs").equals('Y')){
+                if(results.getString("Legs").equals("Y")){
                     legs = true;
                 }
-                if(results.getChar("Top").equals('Y')){
+                if(results.getString("Top").equals("Y")){
                     top = true;
                 }
-                if(results.getChar("Drawer").equals('Y')){
+                if(results.getString("Drawer").equals("Y")){
                     drawer = true;
                 }
                 if(results.getString("Type").equals(type)){
-                    furnitureList.add(new Chair(results.getString("ID"), results.getString("Type"), 
-                        legs, top, drawer, results.getInt("Price"), results.getString("ManuID")));
+                    furnitureList.add(new Desk(results.getString("ID"), results.getString("Type"), legs, top, drawer, results.getInt("Price"), results.getString("ManuID")));
                 }
             }
             stmt.close();
@@ -185,9 +184,9 @@ public class FurnitureDb{
         return furnitureList;
     }
 
-    public List<Filing> filingFinder(String category, String type, String quantity){
+    public ArrayList<Filing> filingFinder(String category, String type, String quantity){
         category = category.toLowerCase();
-        List<Filing> furnitureList = new ArrayList<Filing>();
+        ArrayList<Filing> furnitureList = new ArrayList<Filing>();
         boolean rails = false;
         boolean drawers = false;
         boolean cabinet = false;
@@ -197,18 +196,17 @@ public class FurnitureDb{
             String query = "SELECT * FROM inventory." + category;
             results = stmt.executeQuery(query);
             while(results.next()){
-                if(results.getChar("Rails").equals('Y')){
+                if(results.getString("Rails").equals("Y")){
                     rails = true;
                 }
-                if(results.getChar("Top").equals('Y')){
+                if(results.getString("Top").equals("Y")){
                     drawers = true;
                 }
-                if(results.getChar("Drawer").equals('Y')){
+                if(results.getString("Drawer").equals("Y")){
                     cabinet = true;
                 }
                 if(results.getString("Type").equals(type)){
-                    furnitureList.add(new Chair(results.getString("ID"), results.getString("Type"), 
-                        rails, drawers, cabinet, results.getInt("Price"), results.getString("ManuID")));
+                    furnitureList.add(new Filing(results.getString("ID"), results.getString("Type"), rails, drawers, cabinet, results.getInt("Price"), results.getString("ManuID")));
                 }
             }
             stmt.close();
@@ -221,9 +219,9 @@ public class FurnitureDb{
         return furnitureList;
     }
 
-    public List<Lamp> lampFinder(String category, String type, String quantity){
+    public ArrayList<Lamp> lampFinder(String category, String type, String quantity){
         category = category.toLowerCase();
-        List<Lamp> furnitureList = new ArrayList<Lamp>();
+        ArrayList<Lamp> furnitureList = new ArrayList<Lamp>();
         boolean base = false;
         boolean bulb = false;
 
@@ -232,15 +230,14 @@ public class FurnitureDb{
             String query = "SELECT * FROM inventory." + category;
             results = stmt.executeQuery(query);
             while(results.next()){
-                if(results.getChar("Base").equals('Y')){
+                if(results.getString("Base").equals("Y")){
                     base = true;
                 }
-                if(results.getChar("Bulb").equals('Y')){
+                if(results.getString("Bulb").equals("Y")){
                     bulb = true;
                 }
                 if(results.getString("Type").equals(type)){
-                    furnitureList.add(new Chair(results.getString("ID"), results.getString("Type"), 
-                        base, bulb, results.getInt("Price"), results.getString("ManuID")));
+                    furnitureList.add(new Lamp(results.getString("ID"), results.getString("Type"), base, bulb, results.getInt("Price"), results.getString("ManuID")));
                 }
             }
             stmt.close();
