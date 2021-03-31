@@ -2,7 +2,7 @@
  @author Heidi Schaefer <a 
     href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
 
- @version 1.2
+ @version 1.3
  
  @since 1.0
 */
@@ -108,9 +108,21 @@ public class FurnitureDb{
         }
     }
 
-    //Creation of ArrayLists of furniture with desired types
+    // xFinder methods
+    // Creation of ArrayLists of furniture with desired types
+    // Counts components of furniture
+    // Returns ArrayList of furniture with desired category and type
+    // Indiviudal methods for each category of furniture
 
-    public ArrayList<Chair> chairFinder(String category, String type, String quantity){
+    // xAvailability methods
+    // Counts how many furniture items can be created
+    // With desired type based on how many components are available
+    // Returns true if there are enough components to fulfill order
+    // Returns false if there are not enough of any individual component
+    // to fulfill order
+
+    // chairFinder and chairAvailability
+    public ArrayList<Chair> chairFinder(String category, String type, int quantity){
         category = category.toLowerCase();
         ArrayList<Chair> furnitureList = new ArrayList<Chair>();
         boolean legs = false;
@@ -145,11 +157,40 @@ public class FurnitureDb{
         catch(SQLException e){
             e.printStackTrace();
         }
-
         return furnitureList;
     }
 
-    public ArrayList<Desk> deskFinder(String category, String type, String quantity){
+    public boolean chairAvailability(ArrayList<Chair> furnitureList, int quantity){
+        int legsQuant = 0;
+        int armsQuant = 0;
+        int seatQuant = 0;
+        int cushionQuant = 0;
+
+        for(int i = 0; i < furnitureList.size(); i++){
+            if(furnitureList.get(i).legs == true){
+                legsQuant++;
+            }
+            if(furnitureList.get(i).arms == true){
+                armsQuant++;
+            }
+            if(furnitureList.get(i).seat == true){
+                seatQuant++;
+            }
+            if(furnitureList.get(i).cushion == true){
+                cushionQuant++;
+            }
+        }
+
+        if(legsQuant < quantity || armsQuant < quantity || seatQuant < quantity || cushionQuant < quantity){
+            //Not enough stock
+            return false;
+        }
+
+        return true;
+    }
+
+    // deskFinder and deskAvailability
+    public ArrayList<Desk> deskFinder(String category, String type, int quantity){
         category = category.toLowerCase();
         ArrayList<Desk> furnitureList = new ArrayList<Desk>();
         boolean legs = false;
@@ -180,11 +221,36 @@ public class FurnitureDb{
         catch(SQLException e){
             e.printStackTrace();
         }
-
         return furnitureList;
     }
 
-    public ArrayList<Filing> filingFinder(String category, String type, String quantity){
+    public boolean deskAvailability(ArrayList<Desk> furnitureList, int quantity){
+        int legsQuant = 0;
+        int topQuant = 0;
+        int drawerQuant = 0;
+
+        for(int i = 0; i < furnitureList.size(); i++){
+            if(furnitureList.get(i).legs == true){
+                legsQuant++;
+            }
+            if(furnitureList.get(i).top == true){
+                topQuant++;
+            }
+            if(furnitureList.get(i).drawer == true){
+                drawerQuant++;
+            }
+        }
+
+        if(legsQuant < quantity || topQuant < quantity || drawerQuant < quantity){
+            //Not enough stock
+            return false;
+        }
+
+        return true;
+    }
+
+    // filingFinder and filingAvailability
+    public ArrayList<Filing> filingFinder(String category, String type, int quantity){
         category = category.toLowerCase();
         ArrayList<Filing> furnitureList = new ArrayList<Filing>();
         boolean rails = false;
@@ -218,8 +284,34 @@ public class FurnitureDb{
 
         return furnitureList;
     }
+    
+    public boolean filingAvailability(ArrayList<Filing> furnitureList, int quantity){
+        int railsQuant = 0;
+        int drawersQuant = 0;
+        int cabinetQuant = 0;
 
-    public ArrayList<Lamp> lampFinder(String category, String type, String quantity){
+        for(int i = 0; i < furnitureList.size(); i++){
+            if(furnitureList.get(i).rails == true){
+                railsQuant++;
+            }
+            if(furnitureList.get(i).drawers == true){
+                drawersQuant++;
+            }
+            if(furnitureList.get(i).cabinet == true){
+                cabinetQuant++;
+            }
+        }
+
+        if(railsQuant < quantity || drawersQuant < quantity || cabinetQuant < quantity){
+            //Not enough stock
+            return false;
+        }
+
+        return true;
+    }
+
+    // lampFinder and lampAvailability
+    public ArrayList<Lamp> lampFinder(String category, String type, int quantity){
         category = category.toLowerCase();
         ArrayList<Lamp> furnitureList = new ArrayList<Lamp>();
         boolean base = false;
@@ -248,5 +340,26 @@ public class FurnitureDb{
         }
 
         return furnitureList;
+    }
+
+    public boolean lampAvailability(ArrayList<Lamp> furnitureList, int quantity){
+        int baseQuant = 0;
+        int bulbQuant = 0;
+
+        for(int i = 0; i < furnitureList.size(); i++){
+            if(furnitureList.get(i).base == true){
+                baseQuant++;
+            }
+            if(furnitureList.get(i).bulb == true){
+                bulbQuant++;
+            }
+        }
+
+        if(baseQuant < quantity || bulbQuant < quantity){
+            //Not enough stock
+            return false;
+        }
+
+        return true;
     }
 }
