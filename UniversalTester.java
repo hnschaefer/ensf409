@@ -27,7 +27,7 @@ public class UniversalTester{
         this.PASSWORD = PASSWORD;
     }
 
-    //Establish database connection
+    // Establish database connection
     public void initializeConnection(){
         try{
             dbConnect = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
@@ -37,10 +37,9 @@ public class UniversalTester{
         }
     }
 
-    //Removal of furniture items from database
-    //To be used once items have been placed in order form
-    //And are no longer in inventory
-
+    // Removal of furniture items from database
+    // To be used once items have been placed in order form
+    // And are no longer in inventory
     public void removeFurnitureFromInventory(String category, String id){
         try{
             String query = "DELETE FROM inventory." + category + " WHERE ID = ?";
@@ -58,8 +57,8 @@ public class UniversalTester{
         }
     }
 
-    //Creation of ArrayList of furniture with desired category and type
-
+    // Creation of ArrayList furnitureList that contains FurnitureUniversal objects
+    // with only desired category and desired type
     public ArrayList<FurnitureUniversal> furnitureFinder(String category, String type){
         category = category.toLowerCase();
         ArrayList<FurnitureUniversal> furnitureList = new ArrayList<FurnitureUniversal>();
@@ -72,12 +71,16 @@ public class UniversalTester{
             resultsMeta = results.getMetaData();
             int columns = resultsMeta.getColumnCount();
 
+            // Adding boolean values to components array list
+            // Checks if "arms", "legs", etc. are available
             while(results.next()){
                 for(int i = 3; i < columns - 2; i++){
                     if(resultsMeta.getColumnTypeName(i).equals("Y")){
                         components.add(true);
                     }
                 }
+
+                // Adding FurnitureUniversal objects to array list furnitureList
                 if(results.getString("Type").equals(type)){
                     furnitureList.add(new FurnitureUniversal(results.getString("ID"), results.getString("Type"), components, results.getInt("Price"), results.getString("ManuID")));
                 }
@@ -92,13 +95,15 @@ public class UniversalTester{
         return furnitureList;
     }
 
-    //Returns either desired quantity or quantity available
-
+    // Returns either desired quantity or quantity available
     public int componentCounter(ArrayList<FurnitureUniversal> furnitureList, int desiredQuant){
         int componentCount = furnitureList.get(0).components.size();
         int maybeLeast = 0;
         int availableQuant = 0;
 
+        // Counting how many of each component are available
+        // Example: If 4 arms are available, but only 2 legs,
+        // availableQuant will update to 2
         for(int i = 0; i < furnitureList.size(); i++){
             for(int j = 0; j < componentCount; j++){
                 if(furnitureList.get(i).components.get(j) == true){
@@ -109,9 +114,13 @@ public class UniversalTester{
                 availableQuant = maybeLeast;
             }
         }
+
+        // If there are more furniture items available than
+        // the customer desires, only return as many as they want
         if (desiredQuant < availableQuant){
             return desiredQuant;
         }
+
         return availableQuant;
     }
 }
