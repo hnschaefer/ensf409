@@ -1,6 +1,5 @@
 /**
  @author 
-
  @version
  
  @since 1.0
@@ -8,13 +7,19 @@
 
 package edu.ucalgary.ensf409;
 
-import java.sql.*;
-import java.io.*;
+import java.util.Scanner;
 
 public class UserIO{
     private String category;
     private String type;
     private int quantity;
+
+    public UserIO()
+    {
+        this.category = null;
+        this.type = null;
+        this.quantity = 0;
+    }
 
     public UserIO(String category, String type, int quantity){
         this.category = category;
@@ -33,10 +38,21 @@ public class UserIO{
     public int getQuantity(){
         return this.quantity;
     }
-    /**
-    * @param args Handles a single command-line argument 
-    */
-    public static void main(String[] args){
-        UserIO input = new UserIO(args[0], args[1], args[2]);
+    
+    // call this method in main to prompt userInput
+    public void userInput()
+    {
+        Scanner input = new Scanner(System.in);
+        
+        System.out.println("Enter furniture category: ");
+        this.category = input.nextLine();
+
+        System.out.println("Enter furniture type: ");
+        this.type = input.nextLine();
+
+        System.out.println("Enter number of items: ");
+        this.quantity = Integer.parseInt(input.nextLine());
+
+        input.close();
     }
 }
