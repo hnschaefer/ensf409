@@ -107,10 +107,9 @@ public class FurnitureDb{
         }
     }
 
-    //Creation of ArrayLists of furniture categories
-    //Used for searching through categories and finding desired types
+    //Creation of ArrayLists of furniture with desired types
 
-    public String[] chairFinder(String category, String type, String quantity){
+    public List<Chair> chairFinder(String category, String type, String quantity){
         category = category.toLowerCase();
         List<Chair> furnitureList = new ArrayList<Chair>();
         boolean legs = false;
@@ -146,9 +145,11 @@ public class FurnitureDb{
         catch(SQLException e){
             e.printStackTrace();
         }
+
+        return furnitureList;
     }
 
-    public String[] deskFinder(String category, String type, String quantity){
+    public List<Desk> deskFinder(String category, String type, String quantity){
         category = category.toLowerCase();
         List<Desk> furnitureList = new ArrayList<Desk>();
         boolean legs = false;
@@ -180,9 +181,11 @@ public class FurnitureDb{
         catch(SQLException e){
             e.printStackTrace();
         }
+
+        return furnitureList;
     }
 
-    public String[] filingFinder(String category, String type, String quantity){
+    public List<Filing> filingFinder(String category, String type, String quantity){
         category = category.toLowerCase();
         List<Filing> furnitureList = new ArrayList<Filing>();
         boolean rails = false;
@@ -214,9 +217,11 @@ public class FurnitureDb{
         catch(SQLException e){
             e.printStackTrace();
         }
+
+        return furnitureList;
     }
 
-    public String[] lampFinder(String category, String type, String quantity){
+    public List<Lamp> lampFinder(String category, String type, String quantity){
         category = category.toLowerCase();
         List<Lamp> furnitureList = new ArrayList<Lamp>();
         boolean base = false;
@@ -244,5 +249,7 @@ public class FurnitureDb{
         catch(SQLException e){
             e.printStackTrace();
         }
+
+        return furnitureList;
     }
 }
