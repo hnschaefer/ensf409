@@ -1,7 +1,8 @@
 /**
- @author 
+ @author Heidi Schaefer <a 
+    href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
  
- @version
+ @version 1.1
  
  @since 1.0
 */
@@ -17,7 +18,7 @@ public class Filing{
     public int price;
     public int manuID;
 
-    public Chair(String id, String type, boolean rails, boolean drawers, boolean cabinet, int price, int manuID){
+    public Filing(String id, String type, boolean rails, boolean drawers, boolean cabinet, int price, int manuID){
         this.id = id;
         this.type = type;
         this.rails = rails;
