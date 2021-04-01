@@ -25,4 +25,21 @@ public class Manufacturer{
         this.phone = phone;
         this.province = province;
     }
+
+    public String getManuId()
+    {
+        return this.manuID;
+    }
+    public String getName()
+    {
+        return this.name;
+    }
+    public String getPhone()
+    {
+        return this.phone;
+    }
+    public String getProvince()
+    {
+        return this.province; 
+    }
 }
