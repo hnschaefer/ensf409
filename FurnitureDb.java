@@ -1,6 +1,7 @@
 /**
  @author Heidi Schaefer <a 
     href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
+
  @version 1.5
  
  @since 1.0
@@ -50,21 +51,6 @@ public class FurnitureDb{
         catch(SQLException e){
             e.printStackTrace();
         }
-    }
-    /* The following getter methods are used in the Test file to
-     * perform tests on this file
-     */
-    public String getDburl()
-    {
-        return this.DBURL;
-    }
-    public String getUsername()
-    {
-        return this.USERNAME;
-    }
-    public String getPassword()
-    {
-        return this.PASSWORD;
     }
 
     // Removal of furniture items from database
@@ -139,26 +125,24 @@ public class FurnitureDb{
     public int componentCounter(ArrayList<Furniture> furnitureList, int desiredQuant){
         int componentCount = furnitureList.get(0).components.size();
         int maybeLeast = 0;
-        int availableQuant = 0;
+        // Start by assuming there is enough in stock
+        int availableQuant = desiredQuant;
 
         // Counting how many of each component are available
         //  (eg. if 4 arms are available, but only 2 legs,
         //  availableQuant will update to 2)
-        for(int i = 0; i < furnitureList.size(); i++){
-            for(int j = 0; j < componentCount; j++){
+        for(int i = 0; i < componentCount; i++){
+            for(int j = 0; j < furnitureList.size(); j++){
                 if(furnitureList.get(i).components.get(j) == true){
                     maybeLeast++;
                 }
             }
+            // If there is less than desired in stock,
+            //  change available to the available quantity of component
+            //  with least amount in stock
             if(maybeLeast < availableQuant){
                 availableQuant = maybeLeast;
             }
-        }
-
-        // If there are more furniture items available than
-        //  the customer desires, only return quantity they asked for
-        if (desiredQuant < availableQuant){
-            return desiredQuant;
         }
 
         return availableQuant;
