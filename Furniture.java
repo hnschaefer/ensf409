@@ -11,6 +11,16 @@ package edu.ucalgary.ensf409;
 
 import java.util.*;
 
+/* Furniture is a class which creates objects of type Furniture
+*  All furniture categories share similar attributes of
+*   id, type, price and manuID
+*  However all categories have varying components
+*   (eg. lamp has bulbs but no arms, chair has arms but no bulbs)
+*  The varying components are accounted for in an array list of
+*   type boolean, true if piece of furniture has that component,
+*   false if it does not
+*/
+
 public class Furniture{
     public String id;
     public String type;
