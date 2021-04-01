@@ -16,7 +16,7 @@ public class Furniture{
     public String type;
     public ArrayList<Boolean> components;
     public int price;
-    public int manuID;
+    public String manuID;
 
     public Furniture(String id, String type, ArrayList<Boolean> components, int price, String manuID){
         this.id = id;
