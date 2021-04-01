@@ -1,7 +1,6 @@
 /**
  @author Heidi Schaefer <a 
     href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
-
  @version 1.5
  
  @since 1.0
@@ -51,6 +50,21 @@ public class FurnitureDb{
         catch(SQLException e){
             e.printStackTrace();
         }
+    }
+    /* The following getter methods are used in the Test file to
+     * perform tests on this file
+     */
+    public String getDburl()
+    {
+        return this.DBURL;
+    }
+    public String getUsername()
+    {
+        return this.USERNAME;
+    }
+    public String getPassword()
+    {
+        return this.PASSWORD;
     }
 
     // Removal of furniture items from database
