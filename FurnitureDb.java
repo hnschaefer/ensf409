@@ -196,4 +196,81 @@ public class FurnitureDb{
 
         return manufacturerList;
     }
+
+    // *** THE FOLLOWING CODE IS AN EARLY ATTEMPT TO CALCULATE THE LOWEST PRICE ***
+    // *** THIS SECTION NEEDS A LOT OF WORK!!! ***
+    // *** PROCEED WITH CAUTION!!! ***
+
+
+    // findIterations finds the number of possible furniture combinations based
+    //  on how many items were ordered, and how many are available
+    // Combination equation used (nCk = n! / (k! * (n-k)!) where n = available quantity
+    //  and k = desired quantity.
+    public int findIterations(ArrayList<Furniture> furnitureList, int desiredQuant){
+        int availableQuant = furnitureList.size();
+        int sum = 0;
+    
+        for(int i = desiredQuant; i <= availableQuant; i++){
+            sum += fact(availableQuant)/(fact(i)*(fact(availableQuant-i)));
+        }
+    
+        return sum;
+    }
+
+    public int fact(int num){
+        if (num < 0){
+            throw new IllegalArgumentException();
+        }
+
+        if (num > 1){
+            return num + fact(num-1);
+        }
+        else{
+            return 1;
+        }
+    }
+
+
+    // Checks to see if list possibleCombo has enough of each component to
+    //  fulfill the order (ie. enough legs, arms, bulbs, etc.)
+    // Returns true if enough of each component, returns false otherwise
+    public boolean combinationSuccess(ArrayList<Furniture> possibleCombo, int desiredQuant){
+        int count = 0;
+        for(int i = 0; i < possibleCombo.get(0).components.size(); i++){
+            for(int j = 0; j < possibleCombo.size(); j++){
+                if(possibleCombo.get(j).components.get(i) == true){
+                    count++;
+                }
+            }
+            if (count < desiredQuant){
+                return false;
+            }
+            count = 0;
+        }
+        return true;
+    }
+
+    // Takes furnitureList containing furniture with correct category and type
+    // Creates new arrays with all possibilities of combinations that could fulfill the order
+    // Sends list to combinationSuccess to see if the combination has enough of each component
+    //  to fulfill the order
+    // Returns possibleCombo list if combination success is true, otherwise recursive function continues
+    //  until iteration = 0.
+    public ArrayList<Furniture> findCombinations(ArrayList<Furniture> furnitureList, int desiredQuant, int iteration){
+        if(iteration == 0){
+            return null;
+        }
+
+        ArrayList<Furniture> possibleCombo = new ArrayList<Furniture>();
+
+        if (combinationSuccess(possibleCombo, desiredQuant) == true){
+            return possibleCombo;
+        }
+        
+        else{
+            iteration--;
+            findCombinations(furnitureList, desiredQuant, iteration);
+        }
+    }
+
 }
