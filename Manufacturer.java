@@ -25,26 +25,4 @@ public class Manufacturer{
         this.phone = phone;
         this.province = province;
     }
-
-    public Manufacturer(String category, String manuID){
-        this.manuID = manuID;
-        try{
-            Statement stmt = dbConnect.createStatement();
-            String query = "SELECT * FROM inventory." + category;
-            ResultSet results = stmt.executeQuery(query);
-
-            while(results.next()){
-                if(results.getString("ManuID").equals(this.manuID)){
-                    this.name = results.getString("Name");
-                    this.phone = results.getString("Phone");
-                    this.province = results.getString("Province");
-                    break;
-                }
-            }
-            stmt.close();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
 }
