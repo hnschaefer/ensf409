@@ -27,6 +27,20 @@ public class UserIO{
         this.quantity = quantity;
     }
 
+    public void setCategory(String category)
+    {
+        this.category = category;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+    public void setQuantity(int quantity)
+    {
+        this.quantity = quantity;
+    }
+
     public String getCategory(){
         return this.category;
     }
@@ -45,13 +59,13 @@ public class UserIO{
         Scanner input = new Scanner(System.in);
         
         System.out.println("Enter furniture category: ");
-        this.category = input.nextLine();
+        setCategory(input.nextLine());
 
         System.out.println("Enter furniture type: ");
-        this.type = input.nextLine();
+        setType(input.nextLine());
 
         System.out.println("Enter number of items: ");
-        this.quantity = Integer.parseInt(input.nextLine());
+        setQuantity(Integer.parseInt(input.nextLine()));
 
         input.close();
     }
