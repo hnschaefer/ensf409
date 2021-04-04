@@ -1,7 +1,6 @@
 /**
  @author Heidi Schaefer <a 
     href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
-
  @version 1.8
  
  @since 1.0
@@ -207,6 +206,7 @@ public class FurnitureDb{
     //  on how many items were ordered, and how many are available
     // Combination equation used (nCk = n! / (k! * (n-k)!) where n = available quantity
     //  and k = desired quantity.
+
     public int findIterations(ArrayList<Furniture> furnitureList, int desiredQuant){
         int availableQuant = furnitureList.size();
         int sum = 0;
@@ -235,16 +235,31 @@ public class FurnitureDb{
     // Creates new array with all possibilities of combinations that could fulfill the order
     // Sends list to combinationSuccess to see if the combination has enough of each component
     //  to fulfill the order
-    public void findCombinations(ArrayList<Furniture> furnitureList, int desiredQuant, int availableQuant){
+    public ArrayList<ArrayList<Furniture>> findCombinations(ArrayList<Furniture> furnitureList, int desiredQuant, int availableQuant){
         ArrayList<Furniture> possibleCombo = new ArrayList<Furniture>();
 
-        if(combinationSuccess(possibleCombo, desiredQuant)){
-            successfulComboList.add(possibleCombo);
-        }
+        ArrayList<ArrayList<Furniture>> successfulComboList = new ArrayList<ArrayList<Furniture>>();
 
-        else{
-            //make new combo
+
+        int desiredQuantLoop = desiredQuant;
+        for (int i = 0; i < availableQuant; i++, desiredQuantLoop++)
+        {
+            List<int[]> y = TestChoose.generate(availableQuant, desiredQuantLoop);
+            
+            for (int j = 0; j < y.size() ; j++)
+            {
+                for (int k = 0; k < y.get(j).length; k++)
+                {
+                    possibleCombo.add(furnitureList.get(y.get(i)[j]));
+                }
+                if (combinationSuccess(possibleCombo, desiredQuant) == true)
+                {
+                    successfulComboList.add(possibleCombo);
+                }
+                possibleCombo.clear();                
+            }
         }
+        return successfulComboList;        
     }
 
     // Checks to see if list possibleCombo has enough of each component to
@@ -291,4 +306,31 @@ public class FurnitureDb{
 
         return furnitureList.get(i);
     }
+
+    public List<int[]> generate(int n, int r) {
+        List<int[]> combinations = new ArrayList<>();
+        int[] combination = new int[r];
+    
+        // initialize with lowest lexicographic combination
+        for (int i = 0; i < r; i++) {
+            combination[i] = i;
+        }
+    
+        while (combination[r - 1] < n) {
+            combinations.add(combination.clone());
+    
+             // generate next combination in lexicographic order
+            int t = r - 1;
+            while (t != 0 && combination[t] == n - r + t) {
+                t--;
+            }
+            combination[t]++;
+            for (int i = t + 1; i < r; i++) {
+                combination[i] = combination[i - 1] + 1;
+            }
+        }
+    
+        return combinations;
+    }
+
 }
