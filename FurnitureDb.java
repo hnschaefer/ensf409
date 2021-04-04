@@ -2,7 +2,7 @@
  @author Heidi Schaefer <a 
     href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
 
- @version 1.5
+ @version 1.8
  
  @since 1.0
 */
@@ -266,7 +266,10 @@ public class FurnitureDb{
         return true;
     }
 
-    public int priceCheck(ArrayList<ArrayList<Furniture>> furnitureList){   
+    // Finds cheapest option from successful furniture combinations
+    //  returns array list of the cheapest choice
+    //  to be used to get IDs of furniture choices as well as price
+    public ArrayList<Furniture> priceCheck(ArrayList<ArrayList<Furniture>> furnitureList){   
         ArrayList<Integer> prices = new ArrayList<Integer>();
         int sum = 0;
 
@@ -279,13 +282,13 @@ public class FurnitureDb{
         }
 
         int lowestPrice = prices.get(0);
-
-        for(int i = 0; i < prices.size(); i++){
+        int i;
+        for(i = 0; i < prices.size(); i++){
             if (prices.get(i) < lowestPrice){
                 lowestPrice = prices.get(i);
             }
         }
 
-        return lowestPrice;
+        return furnitureList.get(i);
     }
 }
