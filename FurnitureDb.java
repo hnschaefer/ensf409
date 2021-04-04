@@ -230,6 +230,15 @@ public class FurnitureDb{
         }
     }
 
+    // Takes furnitureList containing furniture with correct category and type
+    // Creates new array with all possibilities of combinations that could fulfill the order
+    // Sends list to combinationSuccess to see if the combination has enough of each component
+    //  to fulfill the order
+    public void findCombinations(ArrayList<Furniture> furnitureList, int desiredQuant, int availableQuant){
+        ArrayList<Furniture> possibleCombo = new ArrayList<Furniture>();
+
+        
+    }
 
     // Checks to see if list possibleCombo has enough of each component to
     //  fulfill the order (ie. enough legs, arms, bulbs, etc.)
@@ -249,28 +258,34 @@ public class FurnitureDb{
         }
         return true;
     }
-
-    // Takes furnitureList containing furniture with correct category and type
-    // Creates new arrays with all possibilities of combinations that could fulfill the order
-    // Sends list to combinationSuccess to see if the combination has enough of each component
-    //  to fulfill the order
-    // Returns possibleCombo list if combination success is true, otherwise recursive function continues
-    //  until iteration = 0.
-    public ArrayList<Furniture> findCombinations(ArrayList<Furniture> furnitureList, int desiredQuant, int iteration){
-        if(iteration == 0){
-            return null;
-        }
-
-        ArrayList<Furniture> possibleCombo = new ArrayList<Furniture>();
-
-        if (combinationSuccess(possibleCombo, desiredQuant) == true){
-            return possibleCombo;
-        }
         
-        else{
-            iteration--;
-            findCombinations(furnitureList, desiredQuant, iteration);
-        }
+
+    public ArrayList<ArrayList<Furniture>> successfulComboList(ArrayList<Furniture> successfulCombo){
+        ArrayList<ArrayList<Furniture>> successfulComboList = new ArrayList<ArrayList<Furniture>>();
+        successfulComboList.add(successfulCombo);
+        return successfulComboList;
     }
 
+    public int priceCheck(ArrayList<ArrayList<Furniture>> furnitureList){   
+        ArrayList<Int> prices = new ArrayList<Int>();
+        int sum = 0;
+
+        for(int i = 0; i < furnitureList.size(); i++){
+            for(int j = 0; j < furnitureList.get(i).size(); j++){
+                sum += furnitureList.get(i).price.get(j);
+                prices.add(sum);
+            }
+            sum = 0;
+        }
+
+        int lowestPrice = prices.get(0);
+
+        for(int i = 0; i < prices.size(); i++){
+            if (prices.get(i) < lowestPrice){
+                lowestPrice = prices.get(i);
+            }
+        }
+
+        return lowestPrice;
+    }
 }
