@@ -36,6 +36,7 @@ public class FurnitureDb{
     private Connection dbConnect;
     private ResultSet results;
     private ResultSetMetaData resultsMeta;
+    private ArrayList<ArrayList<Furniture>> successfulComboList = new ArrayList<ArrayList<Furniture>>();
 
     public FurnitureDb(String DBURL, String USERNAME, String PASSWORD){
         this.DBURL = DBURL;
@@ -237,7 +238,13 @@ public class FurnitureDb{
     public void findCombinations(ArrayList<Furniture> furnitureList, int desiredQuant, int availableQuant){
         ArrayList<Furniture> possibleCombo = new ArrayList<Furniture>();
 
-        
+        if(combinationSuccess(possibleCombo, desiredQuant)){
+            successfulComboList.add(possibleCombo);
+        }
+
+        else{
+            //make new combo
+        }
     }
 
     // Checks to see if list possibleCombo has enough of each component to
@@ -258,21 +265,14 @@ public class FurnitureDb{
         }
         return true;
     }
-        
-
-    public ArrayList<ArrayList<Furniture>> successfulComboList(ArrayList<Furniture> successfulCombo){
-        ArrayList<ArrayList<Furniture>> successfulComboList = new ArrayList<ArrayList<Furniture>>();
-        successfulComboList.add(successfulCombo);
-        return successfulComboList;
-    }
 
     public int priceCheck(ArrayList<ArrayList<Furniture>> furnitureList){   
-        ArrayList<Int> prices = new ArrayList<Int>();
+        ArrayList<Integer> prices = new ArrayList<Integer>();
         int sum = 0;
 
         for(int i = 0; i < furnitureList.size(); i++){
             for(int j = 0; j < furnitureList.get(i).size(); j++){
-                sum += furnitureList.get(i).price.get(j);
+                sum += furnitureList.get(i).get(j).price;
                 prices.add(sum);
             }
             sum = 0;
