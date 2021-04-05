@@ -62,7 +62,7 @@ public class UserIO{
         setCategory(input.nextLine());
         this.category.toLowerCase();
         
-        if((!this.category.equals("chair")) || !(this.category.equals("desk")) || !(this.category.equals("lamp")) || !(this.category.equals("filing")))
+        if(!(this.category.equals("chair")) && !(this.category.equals("desk")) && !(this.category.equals("lamp")) && !(this.category.equals("filing")))
         {
             input.close();
             throw new IllegalArgumentException("The category entered is invalid and does not exist in the database.");
@@ -74,8 +74,8 @@ public class UserIO{
 
         if(this.category.equals("chair"))
         {
-            if(!(this.type.equals("kneeling")) || !(this.type.equals("task")) || !(this.type.equals("mesh")) 
-               || !(this.type.equals("executive")) || !(this.type.equals("ergonomic"))){
+            if(!(this.type.equals("kneeling")) && !(this.type.equals("task")) && !(this.type.equals("mesh")) 
+               && !(this.type.equals("executive")) && !(this.type.equals("ergonomic"))){
                     input.close();
                     throw new IllegalArgumentException("The type entered is invalid and does not exist in the table chair.");
                }
@@ -83,7 +83,7 @@ public class UserIO{
 
         if(this.category.equals("desk"))
         {
-            if(!(this.type.equals("standing")) || !(this.type.equals("adjustable")) || !(this.type.equals("traditional")))
+            if(!(this.type.equals("standing")) && !(this.type.equals("adjustable")) && !(this.type.equals("traditional")))
             {
                 input.close();
                 throw new IllegalArgumentException("The type entered is invalid and does not exist in the table desk.");
@@ -92,7 +92,7 @@ public class UserIO{
 
         if(this.category.equals("lamp"))
         {
-            if(!(this.type.equals("desk")) || !(this.type.equals("study")) || !(this.type.equals("swing arm")))
+            if(!(this.type.equals("desk")) && !(this.type.equals("study")) && !(this.type.equals("swing arm")))
             {
                 input.close();
                 throw new IllegalArgumentException("The type entered is invalid and does not exist in the table lamp.");
@@ -101,7 +101,7 @@ public class UserIO{
 
         if(this.category.equals("filing"))
         {
-            if(!(this.type.equals("small")) || !(this.type.equals("medium")) || !(this.type.equals("large")))
+            if(!(this.type.equals("small")) && !(this.type.equals("medium")) && !(this.type.equals("large")))
             {
                 input.close();
                 throw new IllegalArgumentException("The type entered is invalid and does not exist in the table filing.");
