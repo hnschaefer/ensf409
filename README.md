@@ -1,4 +1,4 @@
-# ensf409
+ensf409
 # ENSF 409 Final Project
 
 Final Project for ENSF 409 - Principles of Software Development - Winter 2021 at the University of Calgary
