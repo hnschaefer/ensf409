@@ -87,15 +87,6 @@ public void checkDatabaseConnection()
 
 }
 
-/* The following test called checkRemoveFurnitureFromInventory()
- * checks if the method removeFurnitureFromInventory successfully removes
- * the specified item from the database. 
- */
-@Test 
-public void checkRemoveFurnitureFromInventory()
-{
-
-}
 /* The following test called checkFurnitureFinder()
  * checks if the method FurnitureFinder() successfully selects
  * the specified category and type of the furniture from the database. 
@@ -113,18 +104,10 @@ public void checkFurnitureFinder()
 {
 
 }
-/* The following test called checkManufacturerSuggestion()
- * checks if the method called manufacturerSuggestion successfully 
- * returns the correct manufacturer. 
- */
-@Test public void checkManufacturerSuggestion()
-{
-
-}
 
 // this test performs if the method called insertNewChair
 // actually inserts a new chair into the database 
-@Test 
+/*@Test 
 public void testAddingNewChairToDatabase()
 {
         FunTestFile object = new FunTestFile(); 
@@ -146,7 +129,7 @@ public void testAddingNewChairToDatabase()
             ex.printStackTrace();
         }
         assertEquals("The method called insertNewChair inside the class FunTestFile does not insert a new chair into the database.", expResult, result);
-}
+}*/
 
 /* The following test called testBlankOrderFormMethod()
  * checks if the method called blankOrderFrom successfully 
@@ -170,11 +153,18 @@ public testBlankOrderFormContents()
     FileIO fileObject= new FileIO();
     fileObject.blankOrderForm();
     File file = new File("c:/pathOfTheCreatedFile");
-    //gotta set value
+    
     if(file.exists())
     {
         //check the contents now 
+
     }
+    else if(!(file.exists())
+    {
+        Boolean status= false; 
+        assertFalse("Adding a data element with an existing key returned true", status);
+    }
+    assertEquals("The file contents are incorrect", expResult, result);
 }
 /*@Test
 public void testBlankOrderFormMethod()
