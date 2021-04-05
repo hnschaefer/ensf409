@@ -209,7 +209,7 @@ public class FurnitureDb{
             ArrayList<Integer[]> indices = combinationMaker(availableQuant, desiredQuantLoop);
             for (int j = 0; j < indices.size() ; j++){
                 for (int k = 0; k < indices.get(j).length; k++){
-                    possibleCombo.add(furnitureList.get(indices.get(i)[j]));
+                    possibleCombo.add(furnitureList.get(indices.get(j)[k]));
                 }
                 if (combinationSuccess(possibleCombo, desiredQuant) == true){
                     successfulComboList.add(possibleCombo);
@@ -280,19 +280,21 @@ public class FurnitureDb{
         for(int i = 0; i < furnitureList.size(); i++){
             for(int j = 0; j < furnitureList.get(i).size(); j++){
                 sum += furnitureList.get(i).get(j).price;
-                prices.add(sum);
             }
+            prices.add(sum);
             sum = 0;
         }
 
         int lowestPrice = prices.get(0);
+
         int i;
         for(i = 0; i < prices.size(); i++){
             if (prices.get(i) < lowestPrice){
                 lowestPrice = prices.get(i);
             }
         }
-
+        
+        i--;
         return furnitureList.get(i);
     }
 }
