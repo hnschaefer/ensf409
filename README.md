@@ -2,6 +2,7 @@ ensf409
 # ENSF 409 Final Project
 
 Final Project for ENSF 409 - Principles of Software Development - Winter 2021 at the University of Calgary
+
 By R. Gill, H. Schaefer, L. Sheikh
 
 The purpose of this program is to facilitate the buying of used furniture from a database. 
