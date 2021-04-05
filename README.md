@@ -14,3 +14,9 @@ If the order cannot be fulfilled, the order form will contain a list of suggeste
 
 A number of tests have also been created to check the validity of the code.
 These tests can be run using JUnit 5.
+
+To run this code in a terminal, navigate to appropriate directory and use the following commands:
+
+javac -cp .;lib/mysql-connector-java-8.0.23.jar;. edu/ucalgary/ensf409/*.java
+
+java -cp .;lib/mysql-connector-java-8.0.23.jar;. edu/ucalgary/ensf409/Main
