@@ -35,7 +35,6 @@ public class FurnitureDb{
     private Connection dbConnect;
     private ResultSet results;
     private ResultSetMetaData resultsMeta;
-    private ArrayList<ArrayList<Furniture>> successfulComboList = new ArrayList<ArrayList<Furniture>>();
 
     public FurnitureDb(String DBURL, String USERNAME, String PASSWORD){
         this.DBURL = DBURL;
@@ -207,10 +206,10 @@ public class FurnitureDb{
 
         int desiredQuantLoop = desiredQuant;
         for (int i = 0; i < availableQuant; i++, desiredQuantLoop++){
-            List<int[]> y = TestChoose.combinationMaker(availableQuant, desiredQuantLoop);
-            for (int j = 0; j < y.size() ; j++){
-                for (int k = 0; k < y.get(j).length; k++){
-                    possibleCombo.add(furnitureList.get(y.get(i)[j]));
+            ArrayList<Integer[]> indices = combinationMaker(availableQuant, desiredQuantLoop);
+            for (int j = 0; j < indices.size() ; j++){
+                for (int k = 0; k < indices.get(j).length; k++){
+                    possibleCombo.add(furnitureList.get(indices.get(i)[j]));
                 }
                 if (combinationSuccess(possibleCombo, desiredQuant) == true){
                     successfulComboList.add(possibleCombo);
@@ -219,6 +218,37 @@ public class FurnitureDb{
             }
         }
         return successfulComboList;        
+    }
+
+    // The following method was based on code from
+    //  https://www.baeldung.com/java-combinations-algorithm
+    //  Section 4. Iterative Algorithm
+    //  by Chandra Prakash
+    // This code generates all possible combinations of indices
+    //  for the furnitureList array in the findCombinations method
+    public ArrayList<Integer[]> combinationMaker(int availableQuant, int desiredQuantLoop) {
+        ArrayList<Integer[]> indexList = new ArrayList<>();
+        Integer[] indexCombo = new Integer[desiredQuantLoop];
+    
+        // initialize with lowest lexicographic combination
+        for (int i = 0; i < desiredQuantLoop; i++) {
+            indexCombo[i] = i;
+        }
+    
+        while (indexCombo[desiredQuantLoop - 1] < availableQuant) {
+            indexList.add(indexCombo.clone());
+    
+             // generate next combination in lexicographic order
+            int j = desiredQuantLoop - 1;
+            while (j > 0 && indexCombo[j] == availableQuant - desiredQuantLoop + j) {
+                j--;
+            }
+            indexCombo[j]++;
+            for (int i = j + 1; i < desiredQuantLoop; i++) {
+                indexCombo[i] = indexCombo[i - 1] + 1;
+            }
+        }
+        return indexList;
     }
 
     // Checks to see if list possibleCombo has enough of each component to
@@ -265,36 +295,4 @@ public class FurnitureDb{
 
         return furnitureList.get(i);
     }
-
-    // The following method was based on code from
-    //  https://www.baeldung.com/java-combinations-algorithm
-    //  Section 4. Iterative Algorithm
-    //  by Chandra Prakash
-    // This code generates all possible combinations of indices
-    //  for the furnitureList array in the findCombinations method
-    public ArrayList<Integer[]> combinationMaker(int availableQuant, int desiredQuantLoop) {
-        ArrayList<Integer[]> indexList = new ArrayList<>();
-        Integer[] indexCombo = new Integer[desiredQuantLoop];
-    
-        // initialize with lowest lexicographic combination
-        for (int i = 0; i < desiredQuantLoop; i++) {
-            indexCombo[i] = i;
-        }
-    
-        while (indexCombo[desiredQuantLoop - 1] < availableQuant) {
-            indexList.add(indexCombo.clone());
-    
-             // generate next combination in lexicographic order
-            int j = desiredQuantLoop - 1;
-            while (j > 0 && indexCombo[j] == availableQuant - desiredQuantLoop + j) {
-                j--;
-            }
-            indexCombo[j]++;
-            for (int i = j + 1; i < desiredQuantLoop; i++) {
-                indexCombo[i] = indexCombo[i - 1] + 1;
-            }
-        }
-        return indexList;
-    }
-
 }
