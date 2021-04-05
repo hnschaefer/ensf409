@@ -1,30 +1,15 @@
 # ensf409
-ENSF 409 Final Project
+# ENSF 409 Final Project
 
+Final Project for ENSF 409 - Principles of Software Development - Winter 2021 at the University of Calgary
+By R. Gill, H. Schaefer, L. Sheikh
 
-**/v1**
-Distinct furniture categories.
-Each category has its own methods, own class,
-ie. Chair, Desk, Filing, Lamp.
+The purpose of this program is to facilitate the buying of used furniture from a database. 
+The user is prompted to input the category, type and quantity of furniture they desire.
+The program then calculates the cheapest option of furniture from the inventory which can be used to fulfill the order.
+Once the best furniture option has been selected, an order form will be printed into a .txt file,
+and the price will be printed onto the terminal.
+If the order cannot be fulfilled, the order form will contain a list of suggested manufacturers.
 
-Pros:
--Consistent, dependable results
-
-Cons:
--No support for new categories
--Lots of code repetition
-
-**/v2**
-A more universal approach.
-Methods work for any category of furniture.
-Class Furniture universal takes into account similarities and differences between categories,
-ie. All categories have id, type, price and manuID
-    but varying components with boolean values (arms, bulbs, cushions, etc.).
-    
-Pros:
--Can easily update database to have new categories
--Less repetition, improved modularity
-
-Cons:
--May not yet be reliable
--Database and user input will have to be more carefully monitored
+A number of tests have also been created to check the validity of the code.
+These tests can be run using JUnit 5.
