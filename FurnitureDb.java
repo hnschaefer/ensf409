@@ -197,63 +197,22 @@ public class FurnitureDb{
         return manufacturerList;
     }
 
-    // *** THE FOLLOWING CODE IS AN EARLY ATTEMPT TO CALCULATE THE LOWEST PRICE ***
-    // *** THIS SECTION NEEDS A LOT OF WORK!!! ***
-    // *** PROCEED WITH CAUTION!!! ***
-
-
-    // findIterations finds the number of possible furniture combinations based
-    //  on how many items were ordered, and how many are available
-    // Combination equation used (nCk = n! / (k! * (n-k)!) where n = available quantity
-    //  and k = desired quantity.
-
-    public int findIterations(ArrayList<Furniture> furnitureList, int desiredQuant){
-        int availableQuant = furnitureList.size();
-        int sum = 0;
-    
-        for(int i = desiredQuant; i <= availableQuant; i++){
-            sum += fact(availableQuant)/(fact(i)*(fact(availableQuant-i)));
-        }
-    
-        return sum;
-    }
-
-    public int fact(int num){
-        if (num < 0){
-            throw new IllegalArgumentException();
-        }
-
-        if (num > 1){
-            return num + fact(num-1);
-        }
-        else{
-            return 1;
-        }
-    }
-
     // Takes furnitureList containing furniture with correct category and type
     // Creates new array with all possibilities of combinations that could fulfill the order
     // Sends list to combinationSuccess to see if the combination has enough of each component
     //  to fulfill the order
     public ArrayList<ArrayList<Furniture>> findCombinations(ArrayList<Furniture> furnitureList, int desiredQuant, int availableQuant){
         ArrayList<Furniture> possibleCombo = new ArrayList<Furniture>();
-
         ArrayList<ArrayList<Furniture>> successfulComboList = new ArrayList<ArrayList<Furniture>>();
 
-
         int desiredQuantLoop = desiredQuant;
-        for (int i = 0; i < availableQuant; i++, desiredQuantLoop++)
-        {
-            List<int[]> y = TestChoose.generate(availableQuant, desiredQuantLoop);
-            
-            for (int j = 0; j < y.size() ; j++)
-            {
-                for (int k = 0; k < y.get(j).length; k++)
-                {
+        for (int i = 0; i < availableQuant; i++, desiredQuantLoop++){
+            List<int[]> y = TestChoose.combinationMaker(availableQuant, desiredQuantLoop);
+            for (int j = 0; j < y.size() ; j++){
+                for (int k = 0; k < y.get(j).length; k++){
                     possibleCombo.add(furnitureList.get(y.get(i)[j]));
                 }
-                if (combinationSuccess(possibleCombo, desiredQuant) == true)
-                {
+                if (combinationSuccess(possibleCombo, desiredQuant) == true){
                     successfulComboList.add(possibleCombo);
                 }
                 possibleCombo.clear();                
@@ -307,30 +266,35 @@ public class FurnitureDb{
         return furnitureList.get(i);
     }
 
-    public List<int[]> generate(int n, int r) {
-        List<int[]> combinations = new ArrayList<>();
-        int[] combination = new int[r];
+    // The following method was based on code from
+    //  https://www.baeldung.com/java-combinations-algorithm
+    //  Section 4. Iterative Algorithm
+    //  by Chandra Prakash
+    // This code generates all possible combinations of indices
+    //  for the furnitureList array in the findCombinations method
+    public ArrayList<Integer[]> combinationMaker(int availableQuant, int desiredQuantLoop) {
+        ArrayList<Integer[]> indexList = new ArrayList<>();
+        Integer[] indexCombo = new Integer[desiredQuantLoop];
     
         // initialize with lowest lexicographic combination
-        for (int i = 0; i < r; i++) {
-            combination[i] = i;
+        for (int i = 0; i < desiredQuantLoop; i++) {
+            indexCombo[i] = i;
         }
     
-        while (combination[r - 1] < n) {
-            combinations.add(combination.clone());
+        while (indexCombo[desiredQuantLoop - 1] < availableQuant) {
+            indexList.add(indexCombo.clone());
     
              // generate next combination in lexicographic order
-            int t = r - 1;
-            while (t != 0 && combination[t] == n - r + t) {
-                t--;
+            int j = desiredQuantLoop - 1;
+            while (j > 0 && indexCombo[j] == availableQuant - desiredQuantLoop + j) {
+                j--;
             }
-            combination[t]++;
-            for (int i = t + 1; i < r; i++) {
-                combination[i] = combination[i - 1] + 1;
+            indexCombo[j]++;
+            for (int i = j + 1; i < desiredQuantLoop; i++) {
+                indexCombo[i] = indexCombo[i - 1] + 1;
             }
         }
-    
-        return combinations;
+        return indexList;
     }
 
 }
