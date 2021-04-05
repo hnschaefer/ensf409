@@ -107,6 +107,8 @@ public class UserIO{
                 throw new IllegalArgumentException("The type entered is invalid and does not exist in the table filing.");
             }
         }
+
+        setType(this.type.substring(0,1).toUpperCase() + this.type.substring(1).toLowerCase());
         
         System.out.println("Enter number of items: ");
         setQuantity(Integer.parseInt(input.nextLine()));
