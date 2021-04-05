@@ -94,11 +94,11 @@ public class FurnitureDb{
             // Checks if "arms", "legs", etc. are available
             // If available, result = true
             while(results.next()){
-                for(int i = 3; i < columns - 2; i++){
-                    if(resultsMeta.getColumnTypeName(i).equals("Y")){
+                for(int i = 3; i < columns - 1; i++){
+                    if(results.getString(resultsMeta.getColumnName(i)).equals("Y")){
                         components.add(true);
                     }
-                    else if(resultsMeta.getColumnTypeName(i).equals("N")){
+                    else if(results.getString(resultsMeta.getColumnName(i)).equals("N")){
                         components.add(false);
                     }
                 }
@@ -108,6 +108,8 @@ public class FurnitureDb{
                     furnitureList.add(new Furniture(results.getString("ID"), results.getString("Type"), 
                     components, results.getInt("Price"), results.getString("ManuID")));
                 }
+
+                components.clear();
             }
             stmt.close();
         }
@@ -124,7 +126,6 @@ public class FurnitureDb{
     public int componentCounter(ArrayList<Furniture> furnitureList, int desiredQuant){
         int componentCount = furnitureList.get(0).components.size();
         int maybeLeast = 0;
-        // Start by assuming there is enough in stock
         int availableQuant = desiredQuant;
 
         // Counting how many of each component are available
@@ -132,7 +133,7 @@ public class FurnitureDb{
         //  availableQuant will update to 2)
         for(int i = 0; i < componentCount; i++){
             for(int j = 0; j < furnitureList.size(); j++){
-                if(furnitureList.get(i).components.get(j) == true){
+                if(furnitureList.get(j).components.get(i) == true){
                     maybeLeast++;
                 }
             }
@@ -142,6 +143,7 @@ public class FurnitureDb{
             if(maybeLeast < availableQuant){
                 availableQuant = maybeLeast;
             }
+            maybeLeast = 0;
         }
 
         return availableQuant;
@@ -273,7 +275,7 @@ public class FurnitureDb{
     // Finds cheapest option from successful furniture combinations
     //  returns array list of the cheapest choice
     //  to be used to get IDs of furniture choices as well as price
-    public ArrayList<Furniture> priceCheck(ArrayList<ArrayList<Furniture>> furnitureList){   
+    public ArrayList<Furniture> priceCheck(ArrayList<ArrayList<Furniture>> furnitureList){
         ArrayList<Integer> prices = new ArrayList<Integer>();
         int sum = 0;
 
@@ -293,7 +295,7 @@ public class FurnitureDb{
                 lowestPrice = prices.get(i);
             }
         }
-        
+
         i--;
         return furnitureList.get(i);
     }
