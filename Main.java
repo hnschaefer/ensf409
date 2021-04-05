@@ -37,8 +37,14 @@ public class Main {
         // Create list of furniture from correct category and type
         ArrayList<Furniture> furnitureList = database.furnitureFinder(category, type);
 
+        // Printing ID's to check for validity
+        for(int i = 0; i < furnitureList.size(); i++){
+            System.out.println(furnitureList.get(i).id);
+        }
+
         // Check how many items from the order can be fulfilled based on inventory availability
         int maxQuantity = database.componentCounter(furnitureList, desiredQuant);
+        System.out.println("Max quantity = " + maxQuantity);
 
         // If no items can be fulfilled, end program
         if (maxQuantity == 0){
@@ -65,12 +71,17 @@ public class Main {
             ArrayList<Furniture> cheapestList = database.priceCheck(database.findCombinations(furnitureList, desiredQuant, furnitureList.size()));
             // ** send to FileIO for printing **
 
+            // Printing to check validity
+            for(int i = 0; i < cheapestList.size(); i++){
+                System.out.println(cheapestList.get(i).id);
+            }
+
             int totalPrice = 0;
             for(int i = 0; i < cheapestList.size(); i++){
                 totalPrice += cheapestList.get(i).price;
             }
 
-            System.out.println("The lowest price for " + desiredQuant + " " + type + " " + category + "is " + totalPrice);
+            System.out.println("The lowest price for " + desiredQuant + " " + type.toLowerCase() + " " + category + "(s) is $" + totalPrice + ".");
 
             // Remove furniture from database after order form is printed
             /*
