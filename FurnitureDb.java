@@ -94,21 +94,18 @@ public class FurnitureDb{
             // Checks if "arms", "legs", etc. are available
             // If available, result = true
             while(results.next()){
-                for(int i = 3; i < columns - 1; i++){
-                    if(results.getString(resultsMeta.getColumnName(i)).equals("Y")){
-                        components.add(true);
-                    }
-                    else if(results.getString(resultsMeta.getColumnName(i)).equals("N")){
-                        components.add(false);
-                    }
-                }
-
-                // Adding Furniture objects to array list furnitureList
                 if(results.getString("Type").equals(type)){
-                    furnitureList.add(new Furniture(results.getString("ID"), results.getString("Type"), 
-                    components, results.getInt("Price"), results.getString("ManuID")));
+                    for(int i = 3; i < columns - 1; i++){
+                        if(results.getString(resultsMeta.getColumnName(i)).equals("Y")){
+                            components.add(true);
+                        }
+                        else if(results.getString(resultsMeta.getColumnName(i)).equals("N")){
+                            components.add(false);
+                        }
+                    }
+                    // Adding Furniture objects to array list furnitureList
+                    furnitureList.add(new Furniture(results.getString("ID"), results.getString("Type"), components, results.getInt("Price"), results.getString("ManuID")));
                 }
-
                 components.clear();
             }
             stmt.close();
@@ -125,6 +122,7 @@ public class FurnitureDb{
     //  furniture type and category 
     public int componentCounter(ArrayList<Furniture> furnitureList, int desiredQuant){
         int componentCount = furnitureList.get(0).components.size();
+        System.out.println("componentcount = " + componentCount);
         int maybeLeast = 0;
         int availableQuant = desiredQuant;
 
@@ -275,20 +273,23 @@ public class FurnitureDb{
     // Finds cheapest option from successful furniture combinations
     //  returns array list of the cheapest choice
     //  to be used to get IDs of furniture choices as well as price
-    public ArrayList<Furniture> priceCheck(ArrayList<ArrayList<Furniture>> furnitureList){
+    public ArrayList<Furniture> priceCheck(ArrayList<ArrayList<Furniture>> allCombinations){
         ArrayList<Integer> prices = new ArrayList<Integer>();
+        ArrayList<Furniture> furnitureList = new ArrayList<Furniture>();
         int sum = 0;
 
-        for(int i = 0; i < furnitureList.size(); i++){
-            for(int j = 0; j < furnitureList.get(i).size(); j++){
-                sum += furnitureList.get(i).get(j).price;
+        for(int i = 0; i < allCombinations.size(); i++){
+            furnitureList.addAll(allCombinations.get(i));
+
+            for(int j = 0; j < furnitureList.size(); j++){
+                sum += furnitureList.get(j).price;
             }
+
             prices.add(sum);
-            sum = 0;
+            furnitureList.clear();
         }
 
         int lowestPrice = prices.get(0);
-
         int i;
         for(i = 0; i < prices.size(); i++){
             if (prices.get(i) < lowestPrice){
@@ -297,6 +298,6 @@ public class FurnitureDb{
         }
 
         i--;
-        return furnitureList.get(i);
+        return allCombinations.get(i);
     }
 }
