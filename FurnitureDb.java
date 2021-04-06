@@ -203,18 +203,37 @@ public class FurnitureDb{
     public ArrayList<ArrayList<Furniture>> findCombinations(ArrayList<Furniture> furnitureList, int desiredQuant, int availableQuant){
         ArrayList<Furniture> possibleCombo = new ArrayList<Furniture>();
         ArrayList<ArrayList<Furniture>> successfulComboList = new ArrayList<ArrayList<Furniture>>();
-
+    
         int desiredQuantLoop = desiredQuant;
         for (int i = 0; i < availableQuant; i++, desiredQuantLoop++){
-            ArrayList<Integer[]> indices = combinationMaker(availableQuant, desiredQuantLoop);
-            for (int j = 0; j < indices.size() ; j++){
+
+            // Get desiredQuantLoop length sets of indices
+            // ie. if desiredQuantLoop = 3, get all combinations which have
+            // 3 indices
+            List<int[]> indices = combinationMaker(availableQuant, desiredQuantLoop);
+
+            // For jth set of indices
+            // ie. first set of 3 indices, second set, etc.
+            for (int j = 0; j < indices.size(); j++){
+
+                // For the kth index in a set
+                // ie. index 0 of first set of 3 indices,
+                //     index 1 of first set of 3 indices, etc.
                 for (int k = 0; k < indices.get(j).length; k++){
+                    // Add index k of furniture set to possibleCombo list
                     possibleCombo.add(furnitureList.get(indices.get(j)[k]));
                 }
-                if (combinationSuccess(possibleCombo, desiredQuant) == true){
+
+                // Check if possibleCombo is a success
+                // ie. has all correct components to make desiredQuant
+                if (combinationSuccess(possibleCombo, desiredQuant)){
+
+                    // If yes, add possibleCombo list to successfulCombo list
+                    //  ** NEED A DEEP COPY SO WE CAN CLEAR POSSIBLE COMBO FOR NEXT ROUND **
                     successfulComboList.add(possibleCombo);
-                }
-                possibleCombo.clear();                
+                }  
+                // Clear possibleCombo for next check
+                possibleCombo.clear();             
             }
         }
         return successfulComboList;        
@@ -226,11 +245,12 @@ public class FurnitureDb{
     //  by Chandra Prakash
     // This code generates all possible combinations of indices
     //  for the furnitureList array in the findCombinations method
-    public ArrayList<Integer[]> combinationMaker(int availableQuant, int desiredQuantLoop) {
-        ArrayList<Integer[]> indexList = new ArrayList<>();
-        Integer[] indexCombo = new Integer[desiredQuantLoop];
+    public List<int[]> combinationMaker(int availableQuant, int desiredQuantLoop) {
+        List<int[]> indexList = new ArrayList<>();
+        int[] indexCombo = new int[desiredQuantLoop];
     
-        // initialize with lowest lexicographic combination
+        // Initialize indexCombo with first set of possible indices
+        //  in ascending order
         for (int i = 0; i < desiredQuantLoop; i++) {
             indexCombo[i] = i;
         }
@@ -238,7 +258,7 @@ public class FurnitureDb{
         while (indexCombo[desiredQuantLoop - 1] < availableQuant) {
             indexList.add(indexCombo.clone());
     
-             // generate next combination in lexicographic order
+             // Get next combination in ascending order
             int j = desiredQuantLoop - 1;
             while (j > 0 && indexCombo[j] == availableQuant - desiredQuantLoop + j) {
                 j--;
@@ -256,6 +276,7 @@ public class FurnitureDb{
     // Returns true if enough of each component, returns false otherwise
     public boolean combinationSuccess(ArrayList<Furniture> possibleCombo, int desiredQuant){
         int count = 0;
+        System.out.println("pC.size = " + possibleCombo.size());
         for(int i = 0; i < possibleCombo.get(0).components.size(); i++){
             for(int j = 0; j < possibleCombo.size(); j++){
                 if(possibleCombo.get(j).components.get(i) == true){
@@ -275,18 +296,17 @@ public class FurnitureDb{
     //  to be used to get IDs of furniture choices as well as price
     public ArrayList<Furniture> priceCheck(ArrayList<ArrayList<Furniture>> allCombinations){
         ArrayList<Integer> prices = new ArrayList<Integer>();
-        ArrayList<Furniture> furnitureList = new ArrayList<Furniture>();
         int sum = 0;
 
+        System.out.println("allCombinations.size() = " + allCombinations.size());
+        System.out.println("allCombinations.get(0).size = " + allCombinations.get(0).size());
+
         for(int i = 0; i < allCombinations.size(); i++){
-            furnitureList.addAll(allCombinations.get(i));
-
-            for(int j = 0; j < furnitureList.size(); j++){
-                sum += furnitureList.get(j).price;
+            for(int j = 0; j < allCombinations.get(i).size(); j++){
+                System.out.println("allCombinations.get(i).get(j).price = " + allCombinations.get(i).get(j).price);
+                sum += allCombinations.get(i).get(j).price;
             }
-
             prices.add(sum);
-            furnitureList.clear();
         }
 
         int lowestPrice = prices.get(0);
