@@ -37,4 +37,25 @@ public class Furniture{
         this.price = price;
         this.manuID = manuID;
     }
+
+    public String getId()
+    {
+        return this.id;
+    }
+    public String getType()
+    {
+        return this.type;
+    }
+    public ArrayList<Boolean> getComponents()
+    {
+        return this.components; 
+    }
+    public int getPrice()
+    {
+        return this.price;
+    }
+    public String manuId()
+    {
+        return this.manuID;
+    }
 }
