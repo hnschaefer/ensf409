@@ -90,6 +90,12 @@ public class Main {
         System.out.println("Length of findCombinations return = " + allCombinations.size());
         // PASS
 
+        for(int i = 0; i < allCombinations.size(); i++){
+            for(int j = 0; j < allCombinations.get(i).size(); j++){
+                System.out.println("allCombinations.get(i).size() = " + allCombinations.get(i).size());
+            }
+        }
+
         // Finds the cheapest furniture combination to fulfill order
         ArrayList<Furniture> cheapestList = database.priceCheck(allCombinations);
         // ** send to FileIO for printing **
