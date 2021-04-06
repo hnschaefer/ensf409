@@ -24,35 +24,17 @@ import java.util.*;
 public class Furniture{
     public String id;
     public String type;
-    public ArrayList<Boolean> components;
+    public ArrayList<Boolean> components = new ArrayList<Boolean>();
     public int price;
     public String manuID;
 
     public Furniture(String id, String type, ArrayList<Boolean> components, int price, String manuID){
         this.id = id;
         this.type = type;
-        this.components = components;
+        for(int i = 0; i < components.size(); i++){
+            this.components.add(components.get(i));
+        }
         this.price = price;
         this.manuID = manuID;
-    }
-    public String getId()
-    {
-        return this.id;
-    }
-    public String getType()
-    {
-        return this.type;
-    }
-    public ArrayList<Boolean> getComponents()
-    {
-        return this.components; 
-    }
-    public int getPrice()
-    {
-        return this.price;
-    }
-    public String manuId()
-    {
-        return this.manuID;
     }
 }
