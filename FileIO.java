@@ -62,11 +62,9 @@ public class FileIO{
         StringBuffer originalRequest = new StringBuffer("\n" + "Original Request: " + type + " " + category + ", " + quantity);
         
         String itemsOrdered = "\n" +"Items Ordered";
-        System.out.println("HEre");
         for (int i = 0; i < list.size(); i++)
         {
             itemsOrdered = itemsOrdered + "\n" + "ID: " + list.get(i).getId();
-            System.out.println("HEre");
         }
 
         File newfile = new File("Furniture Order Form.txt"); // created a File object called newfile
@@ -77,7 +75,7 @@ public class FileIO{
                 newfile.createNewFile();
             } 
             PrintWriter pw = new PrintWriter(newfile);
-            pw.println(title);
+            pw.print(title);
             pw.println(fcd);
             pw.println(originalRequest);
             pw.println(itemsOrdered);
