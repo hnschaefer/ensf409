@@ -1,17 +1,22 @@
+/**
+ @author 
+ @version 1.5
+ @since 1.0
+*/
+
 package edu.ucalgary.ensf409;
 import java.util.*;
 
 public class Main {
 
-    public static void main (String[] args)
-    {
+    public static void main (String[] args){   
+        // Take user input
         UserIO userIO = new UserIO();
         userIO.userInput();
         
-    // Blank form
-        //FileIO d = new FileIO();
-        //d.blankOrderForm();
-        // Running program
+        // Create blank form
+        FileIO blank = new FileIO();
+        blank.blankOrderForm();
 
         // Create variables from user input
         String category = userIO.getCategory();
@@ -19,39 +24,79 @@ public class Main {
         int desiredQuant = userIO.getQuantity();
 
         // Connection to database
-        FurnitureDb database = new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
+        FurnitureDb database = new FurnitureDb
+                    ("jdbc:mysql://localhost/inventory", "scm", "ensf409");
         database.initializeConnection();
 
         // Create list of furniture from correct category and type
-        ArrayList<Furniture> furnitureList = database.furnitureFinder(category, type);
-
-
-        // Check how many items from the order can be fulfilled based on inventory availability
+        ArrayList<Furniture> furnitureList = 
+                    database.furnitureFinder(category, type);
+        
+        // Check how many items from the order can be fulfilled based on 
+        //  inventory availability
         int maxQuantity = database.componentCounter(furnitureList, desiredQuant);
-        if (maxQuantity >= desiredQuant)
-        {
-            ArrayList<ArrayList<Furniture>> allCombinations = database.findCombinations(furnitureList, desiredQuant, furnitureList.size());
-
-            // Finds the cheapest furniture combination to fulfill order
-            ArrayList<Furniture> cheapestList = database.priceCheck(allCombinations);
-            System.out.println("chespestList size:" + cheapestList.size());
-            int totalPrice = 0;
-            for(int i = 0; i < cheapestList.size(); i++){
-                totalPrice += cheapestList.get(i).getPrice();
-            }
+        
+        // If no items can be fulfilled, end program
+        if (maxQuantity == 0){
+            Set<Manufacturer> manufacturers = 
+                        database.manufacturerSuggestion(category);
             // ** send to FileIO for printing **
-            FileIO y = new FileIO();
-            y.completeOrderForm(cheapestList, totalPrice, type, category, desiredQuant);
+
+            System.out.println("The availability of " + type.toLowerCase() + 
+                        " " + category + "s is 0.");
+            System.out.println("A list of manufacturers has been supplied.");
+            System.out.println("We apologize for the inconvenience." + 
+                        " Thank you for using our service.");
+
+            System.exit(0);
         }
-        else 
-        {
-            System.out.println("The availability of " + type.toLowerCase() + " " + category + "s is " + maxQuantity);
-            System.out.println("A list of manufacturers has been supplied for your convenience.");
-            // add list of manufacturers
-            System.out.println("We apologize for the inconvenience, thank you for using our service.");
-            System.exit(1);
+
+        // If some items can be fulfilled, but not all
+        else if(maxQuantity < desiredQuant){
+            Set<Manufacturer> manufacturers = 
+                        database.manufacturerSuggestion(category);
+            // ** send to FileIO for printing **
+
+            System.out.println("The availability of " + type.toLowerCase() + 
+                        " " + category + "s is " + maxQuantity + ".");
+            System.out.println("An order form will be completed for " + 
+                        maxQuantity + " " + type.toLowerCase() + " " + 
+                        category + "(s).");
+            System.out.println("A list of manufacturers has also been supplied.");
+            System.out.println("We apologize for the inconvenience." + 
+                        " Thank you for using our service.");
+
+            desiredQuant = maxQuantity;
         }
+
+        // Finds all combinations
+        ArrayList<ArrayList<Furniture>> allCombinations = 
+                    database.findCombinations(furnitureList, desiredQuant, 
+                    furnitureList.size());
+       
+        // Finds the cheapest furniture combination to fulfill order
+        ArrayList<Furniture> cheapestList = database.priceCheck(allCombinations);
         
-        
+        int totalPrice = 0;
+        for(int i = 0; i < cheapestList.size(); i++){
+            totalPrice += cheapestList.get(i).price;
+        }
+        System.out.println("The lowest price for " + desiredQuant + " " + 
+                    type.toLowerCase() + " " + category + "(s) is $" + 
+                    totalPrice + ".");
+
+        // Create filled out order form
+        FileIO orderForm = new FileIO();
+        orderForm.completeOrderForm(cheapestList, totalPrice, type, category, 
+                    desiredQuant);
+
+        // Remove furniture from database after order form is printed
+        // Commented out for now to avoid removing test objects from database
+        /*
+        for(int i = 0; i < cheapestList.size(); i++){
+            database.removeFurnitureFromInventory(category, 
+                        cheapestList.get(i).id);
+        }
+        */
     }   
 }
