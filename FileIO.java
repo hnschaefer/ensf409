@@ -56,10 +56,11 @@ public class FileIO{
         }
     }
 
-    public void completeOrderForm(ArrayList<Furniture> list, int totalPrice, String type, String category, int quantity){
+    public void completeOrderForm(ArrayList<Furniture> list, int totalPrice, String type, String category, int originalQuant, int availableQuant){
         String title = "Furniture Order Form";
         String fcd = "\n" + "\nFacultyName:" + "\nContact:" +"\nDate:";
-        StringBuffer originalRequest = new StringBuffer("\n" + "Original Request: " + type + " " + category + ", " + quantity);
+        StringBuffer originalRequest = new StringBuffer("\n" + "Original Request: " + type + " " + category + ", " + originalQuant);
+        StringBuffer availableRequest = new StringBuffer("\n" + "Available: " + type + " " + category + ", " + availableQuant);
         
         String itemsOrdered = "\n" +"Items Ordered";
         for (int i = 0; i < list.size(); i++)
@@ -78,6 +79,7 @@ public class FileIO{
             pw.print(title);
             pw.println(fcd);
             pw.println(originalRequest);
+            pw.println(availableRequest);
             pw.println(itemsOrdered);
             pw.print("\n"+"Total Price: $" +totalPrice);
             pw.close();

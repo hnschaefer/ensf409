@@ -22,10 +22,11 @@ public class Main {
         String category = userIO.getCategory();
         String type = userIO.getType();
         int desiredQuant = userIO.getQuantity();
+        int originalQuant = desiredQuant;
 
         // Connection to database
         FurnitureDb database = new FurnitureDb
-                    ("jdbc:mysql://localhost/inventory", "scm", "ensf409");
+                    ("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
         database.initializeConnection();
 
         // Create list of furniture from correct category and type
@@ -38,13 +39,19 @@ public class Main {
         
         // If no items can be fulfilled, end program
         if (maxQuantity == 0){
-            Set<Manufacturer> manufacturers = 
+            ArrayList<Manufacturer> manufacturers = 
                         database.manufacturerSuggestion(category);
             // ** send to FileIO for printing **
 
             System.out.println("The availability of " + type.toLowerCase() + 
                         " " + category + "s is 0.");
-            System.out.println("A list of manufacturers has been supplied.");
+            System.out.println();
+            System.out.println("A list of manufacturers: ");
+            for (int i = 0; i < manufacturers.size(); i++)
+            {
+                System.out.println(manufacturers.get(i).getName());
+            }
+            System.out.println();
             System.out.println("We apologize for the inconvenience." + 
                         " Thank you for using our service.");
 
@@ -53,7 +60,7 @@ public class Main {
 
         // If some items can be fulfilled, but not all
         else if(maxQuantity < desiredQuant){
-            Set<Manufacturer> manufacturers = 
+            ArrayList<Manufacturer> manufacturers = 
                         database.manufacturerSuggestion(category);
             // ** send to FileIO for printing **
 
@@ -62,7 +69,13 @@ public class Main {
             System.out.println("An order form will be completed for " + 
                         maxQuantity + " " + type.toLowerCase() + " " + 
                         category + "(s).");
-            System.out.println("A list of manufacturers has also been supplied.");
+            System.out.println();
+            System.out.println("A list of manufacturers: ");
+            for (int i = 0; i < manufacturers.size(); i++)
+            {
+                System.out.println(manufacturers.get(i).getName());
+            }
+            System.out.println();
             System.out.println("We apologize for the inconvenience." + 
                         " Thank you for using our service.");
 
@@ -88,7 +101,7 @@ public class Main {
         // Create filled out order form
         FileIO orderForm = new FileIO();
         orderForm.completeOrderForm(cheapestList, totalPrice, type, category, 
-                    desiredQuant);
+                    originalQuant, desiredQuant);
 
         // Remove furniture from database after order form is printed
         // Commented out for now to avoid removing test objects from database

@@ -137,9 +137,9 @@ public class FurnitureDb{
     //  from inventory, in order for clients to have contacts of manufacturers
     //  who carry their desired furniture category, in case the quantity they
     //  desire is not available
-    public Set<Manufacturer> manufacturerSuggestion(String category){
-        Set<Manufacturer> manufacturerList = new HashSet<>();
-        Set<String> manuID = new HashSet<>();
+    public ArrayList<Manufacturer> manufacturerSuggestion(String category){
+        ArrayList<Manufacturer> manufacturerList = new ArrayList<>();
+        ArrayList<String> manuID = new ArrayList<>();
 
         // Connection to database, and creation of SQL query
         // Adds manufacturer IDs to manuID list, from items
