@@ -1,8 +1,7 @@
 /**
  @author Heidi Schaefer <a 
     href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
- @version 1.8
- 
+ @version 2.5
  @since 1.0
 */
 
@@ -52,28 +51,6 @@ public class FurnitureDb{
         }
     }
 
-    // Removal of furniture items from database
-    // To be used once items have been placed in order form
-    //  and are no longer in inventory
-    public void removeFurnitureFromInventory(String category, String id){
-        // Connection to database, and creation of SQL query to delete items
-        //  from database
-        try{
-            String query = "DELETE FROM inventory." + category + " WHERE ID = ?";
-            PreparedStatement stmt = dbConnect.prepareStatement(query);
-            
-            stmt.setString(1, id);
-
-            int rows = stmt.executeUpdate();
-            System.out.println("Rows affected: " + rows);
-
-            stmt.close();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
-
     // Returns ArrayList "furnitureList" that contains Furniture objects
     //  with only customer's desired category and desired type
     //  (eg. list of standing desks)
@@ -92,19 +69,24 @@ public class FurnitureDb{
 
             // Adding boolean values to components array list
             // Checks if "arms", "legs", etc. are available
-            // If available, result = true
+            // If available, result = true in component list for
+            //  that furniture object
             while(results.next()){
                 if(results.getString("Type").equals(type)){
                     for(int i = 3; i < columns - 1; i++){
-                        if(results.getString(resultsMeta.getColumnName(i)).equals("Y")){
+                        if(results.getString
+                                (resultsMeta.getColumnName(i)).equals("Y")){
                             components.add(true);
                         }
-                        else if(results.getString(resultsMeta.getColumnName(i)).equals("N")){
+                        else if(results.getString
+                                (resultsMeta.getColumnName(i)).equals("N")){
                             components.add(false);
                         }
                     }
                     // Adding Furniture objects to array list furnitureList
-                    furnitureList.add(new Furniture(results.getString("ID"), results.getString("Type"), components, results.getInt("Price"), results.getString("ManuID")));
+                    furnitureList.add(new Furniture(results.getString("ID"), 
+                        results.getString("Type"), components, 
+                        results.getInt("Price"), results.getString("ManuID")));
                 }
                 components.clear();
             }
@@ -118,9 +100,13 @@ public class FurnitureDb{
         return furnitureList;
     }
 
-    // Counter which returns either desired quantity or quantity available of desired 
-    //  furniture type and category 
-    public int componentCounter(ArrayList<Furniture> furnitureList, int desiredQuant){
+    // Counter which returns either desired quantity or quantity available 
+    //  of desired furniture type and category 
+    // (eg. if customer wants 5 mesh chairs, but only 3 available, 3 will 
+    //  be returned)
+    public int componentCounter(ArrayList<Furniture> furnitureList, 
+            int desiredQuant){
+
         int componentCount = furnitureList.get(0).components.size();
         int maybeLeast = 0;
         int availableQuant = desiredQuant;
@@ -182,8 +168,10 @@ public class FurnitureDb{
 
             while(results.next()){
                 if (manuID.contains(results.getString("ManuID"))){
-                    manufacturerList.add(new Manufacturer(results.getString("ManuID"), 
-                    results.getString("Name"), results.getString("Phone"), results.getString("Province")));
+                    manufacturerList.add(new 
+                    Manufacturer(results.getString("ManuID"), 
+                    results.getString("Name"), results.getString("Phone"), 
+                    results.getString("Province")));
                 }
             }
         }
@@ -196,12 +184,16 @@ public class FurnitureDb{
     }
 
     // Takes furnitureList containing furniture with correct category and type
-    // Creates new array with all possibilities of combinations that could fulfill the order
-    // Sends list to combinationSuccess to see if the combination has enough of each component
-    //  to fulfill the order
-    public ArrayList<ArrayList<Furniture>> findCombinations(ArrayList<Furniture> furnitureList, int desiredQuant, int availableQuant){
+    // Creates new array with all possibilities of combinations that 
+    //  could fulfill the order
+    // Sends list to combinationSuccess to see if the combination has enough 
+    //  of each component to fulfill the order
+    public ArrayList<ArrayList<Furniture>> findCombinations(ArrayList<Furniture> 
+                furnitureList, int desiredQuant, int availableQuant){
+
         ArrayList<Furniture> possibleCombo = new ArrayList<Furniture>();
-        ArrayList<ArrayList<Furniture>> successfulComboList = new ArrayList<ArrayList<Furniture>>();
+        ArrayList<ArrayList<Furniture>> successfulComboList = new 
+                    ArrayList<ArrayList<Furniture>>();
     
         int desiredQuantLoop = desiredQuant;
         for (int i = 0; i < availableQuant; i++, desiredQuantLoop++){
@@ -209,7 +201,8 @@ public class FurnitureDb{
             // Get desiredQuantLoop length sets of indices
             // ie. if desiredQuantLoop = 3, get all combinations which have
             // 3 indices
-            List<int[]> indices = combinationMaker(availableQuant, desiredQuantLoop);
+            List<int[]> indices = combinationMaker(availableQuant, 
+                        desiredQuantLoop);
 
             // For jth set of indices
             // ie. first set of 3 indices, second set, etc.
@@ -227,8 +220,10 @@ public class FurnitureDb{
                 // ie. has all correct components to make desiredQuant
                 if (combinationSuccess(possibleCombo, desiredQuant)){
                     // If yes, add possibleCombo list to successfulCombo list
-                    // Create a deep copy in order to clear possibleCombo for next round
-                    ArrayList<Furniture> successfulCombo = new ArrayList<Furniture>(possibleCombo);
+                    // Create a deep copy in order to clear possibleCombo for 
+                    //  next round
+                    ArrayList<Furniture> successfulCombo = new 
+                                ArrayList<Furniture>(possibleCombo);
                     successfulComboList.add(successfulCombo);
                 }  
                 // Clear possibleCombo for next check
@@ -244,26 +239,27 @@ public class FurnitureDb{
     //  by Chandra Prakash
     // This code generates all possible combinations of indices
     //  for the furnitureList array in the findCombinations method
-    public List<int[]> combinationMaker(int availableQuant, int desiredQuantLoop) {
+    public List<int[]> combinationMaker(int availableQuant, int desiredQuantLoop){
         List<int[]> indexList = new ArrayList<>();
         int[] indexCombo = new int[desiredQuantLoop];
     
         // Initialize indexCombo with first set of possible indices
         //  in ascending order
-        for (int i = 0; i < desiredQuantLoop; i++) {
+        for (int i = 0; i < desiredQuantLoop; i++){
             indexCombo[i] = i;
         }
     
-        while (indexCombo[desiredQuantLoop - 1] < availableQuant) {
+        while (indexCombo[desiredQuantLoop - 1] < availableQuant){
             indexList.add(indexCombo.clone());
     
              // Get next combination in ascending order
             int j = desiredQuantLoop - 1;
-            while (j > 0 && indexCombo[j] == availableQuant - desiredQuantLoop + j) {
+            while (j > 0 && indexCombo[j] == 
+                        availableQuant - desiredQuantLoop + j){
                 j--;
             }
             indexCombo[j]++;
-            for (int i = j + 1; i < desiredQuantLoop; i++) {
+            for (int i = j + 1; i < desiredQuantLoop; i++){
                 indexCombo[i] = indexCombo[i - 1] + 1;
             }
         }
@@ -273,7 +269,9 @@ public class FurnitureDb{
     // Checks to see if list possibleCombo has enough of each component to
     //  fulfill the order (ie. enough legs, arms, bulbs, etc.)
     // Returns true if enough of each component, returns false otherwise
-    public boolean combinationSuccess(ArrayList<Furniture> possibleCombo, int desiredQuant){
+    public boolean combinationSuccess(ArrayList<Furniture> possibleCombo, 
+                int desiredQuant){
+
         int count = 0;
         for(int i = 0; i < possibleCombo.get(0).components.size(); i++){
             for(int j = 0; j < possibleCombo.size(); j++){
@@ -292,7 +290,9 @@ public class FurnitureDb{
     // Finds cheapest option from successful furniture combinations
     //  returns array list of the cheapest choice
     //  to be used to get IDs of furniture choices as well as price
-    public ArrayList<Furniture> priceCheck(ArrayList<ArrayList<Furniture>> allCombinations){
+    public ArrayList<Furniture> priceCheck(ArrayList<ArrayList<Furniture>> 
+                allCombinations){
+
         int[] prices = new int[allCombinations.size()];
         int sum = 0;
 
@@ -315,5 +315,27 @@ public class FurnitureDb{
         }
 
         return allCombinations.get(index);
+    }
+
+    // Removal of furniture items from database
+    // To be used once items have been placed in order form
+    //  and are no longer in inventory
+    public void removeFurnitureFromInventory(String category, String id){
+        // Connection to database, and creation of SQL query to delete items
+        //  from database
+        try{
+            String query = "DELETE FROM inventory." + category + " WHERE ID = ?";
+            PreparedStatement stmt = dbConnect.prepareStatement(query);
+            
+            stmt.setString(1, id);
+
+            int rows = stmt.executeUpdate();
+            System.out.println("Rows affected: " + rows);
+
+            stmt.close();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 }
