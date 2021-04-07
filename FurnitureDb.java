@@ -122,7 +122,6 @@ public class FurnitureDb{
     //  furniture type and category 
     public int componentCounter(ArrayList<Furniture> furnitureList, int desiredQuant){
         int componentCount = furnitureList.get(0).components.size();
-        System.out.println("componentcount = " + componentCount);
         int maybeLeast = 0;
         int availableQuant = desiredQuant;
 
@@ -227,10 +226,10 @@ public class FurnitureDb{
                 // Check if possibleCombo is a success
                 // ie. has all correct components to make desiredQuant
                 if (combinationSuccess(possibleCombo, desiredQuant)){
-
                     // If yes, add possibleCombo list to successfulCombo list
-                    //  ** NEED A DEEP COPY SO WE CAN CLEAR POSSIBLE COMBO FOR NEXT ROUND **
-                    successfulComboList.add(possibleCombo);
+                    // Create a deep copy in order to clear possibleCombo for next round
+                    ArrayList<Furniture> successfulCombo = new ArrayList<Furniture>(possibleCombo);
+                    successfulComboList.add(successfulCombo);
                 }  
                 // Clear possibleCombo for next check
                 possibleCombo.clear();             
@@ -276,7 +275,6 @@ public class FurnitureDb{
     // Returns true if enough of each component, returns false otherwise
     public boolean combinationSuccess(ArrayList<Furniture> possibleCombo, int desiredQuant){
         int count = 0;
-        System.out.println("pC.size = " + possibleCombo.size());
         for(int i = 0; i < possibleCombo.get(0).components.size(); i++){
             for(int j = 0; j < possibleCombo.size(); j++){
                 if(possibleCombo.get(j).components.get(i) == true){
@@ -295,29 +293,27 @@ public class FurnitureDb{
     //  returns array list of the cheapest choice
     //  to be used to get IDs of furniture choices as well as price
     public ArrayList<Furniture> priceCheck(ArrayList<ArrayList<Furniture>> allCombinations){
-        ArrayList<Integer> prices = new ArrayList<Integer>();
+        int[] prices = new int[allCombinations.size()];
         int sum = 0;
-
-        System.out.println("allCombinations.size() = " + allCombinations.size());
-        System.out.println("allCombinations.get(0).size = " + allCombinations.get(0).size());
 
         for(int i = 0; i < allCombinations.size(); i++){
             for(int j = 0; j < allCombinations.get(i).size(); j++){
-                System.out.println("allCombinations.get(i).get(j).price = " + allCombinations.get(i).get(j).price);
                 sum += allCombinations.get(i).get(j).price;
             }
-            prices.add(sum);
+            prices[i] = sum;
+            sum = 0;
         }
 
-        int lowestPrice = prices.get(0);
+        int lowestPrice = prices[0];
         int i;
-        for(i = 0; i < prices.size(); i++){
-            if (prices.get(i) < lowestPrice){
-                lowestPrice = prices.get(i);
+        int index = 0;
+        for(i = 0; i < prices.length; i++){
+            if (prices[i] < lowestPrice){
+                lowestPrice = prices[i];
+                index = i;
             }
         }
 
-        i--;
-        return allCombinations.get(i);
+        return allCombinations.get(index);
     }
 }
