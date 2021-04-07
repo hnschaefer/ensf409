@@ -40,6 +40,7 @@ public class Main {
 
         // TEST
         // Printing ID's to check for validity & booleans
+        /*
         for(int i = 0; i < furnitureList.size(); i++){
             System.out.println(furnitureList.get(i).id);
             for(int j = 0; j < furnitureList.get(i).components.size(); j++){
@@ -52,6 +53,7 @@ public class Main {
             }
             System.out.println();
         }
+        */
         // PASS
 
         // Check how many items from the order can be fulfilled based on inventory availability
@@ -59,7 +61,7 @@ public class Main {
         
 
         // TEST
-        System.out.println("Max quantity = " + maxQuantity);
+        // System.out.println("Max quantity = " + maxQuantity);
         // PASS
 
 
@@ -87,14 +89,18 @@ public class Main {
         ArrayList<ArrayList<Furniture>> allCombinations = database.findCombinations(furnitureList, desiredQuant, furnitureList.size());
         
         // TEST
-        System.out.println("Length of findCombinations return = " + allCombinations.size());
+        // System.out.println("Length of findCombinations return = " + allCombinations.size());
         // PASS
 
+        // TEST
+        /*
         for(int i = 0; i < allCombinations.size(); i++){
             for(int j = 0; j < allCombinations.get(i).size(); j++){
                 System.out.println("allCombinations.get(i).size() = " + allCombinations.get(i).size());
             }
         }
+        */
+        // PASS
 
         // Finds the cheapest furniture combination to fulfill order
         ArrayList<Furniture> cheapestList = database.priceCheck(allCombinations);
@@ -103,21 +109,20 @@ public class Main {
 
         // TEST
         // Printing to check validity
+        /*
         int cheapestSize = cheapestList.size();
         System.out.println("Size of cheapestList = " + cheapestSize);
         for(int i = 0; i < cheapestList.size(); i++){
             System.out.println("ID: " + cheapestList.get(i).id);
         }
-        // FAIL
+        */
+        // PASS
 
-
-        // TEST
         int totalPrice = 0;
         for(int i = 0; i < cheapestList.size(); i++){
             totalPrice += cheapestList.get(i).price;
         }
         System.out.println("The lowest price for " + desiredQuant + " " + type.toLowerCase() + " " + category + "(s) is $" + totalPrice + ".");
-        //FAIL
 
 
         // Remove furniture from database after order form is printed
