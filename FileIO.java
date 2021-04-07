@@ -1,4 +1,5 @@
 package edu.ucalgary.ensf409;
+import java.util.ArrayList;
 
 /**
 @author Lubaba Sheikh <a href="mailto:lubaba.sheikh@ucalgary.ca">
@@ -16,6 +17,10 @@ public class FileIO{
     public FileIO(String in, String out){
         this.in = in;
         this.out = out;
+    }
+    public FileIO()
+    {
+        
     }
 
     public String getIn(){
@@ -51,15 +56,17 @@ public class FileIO{
         }
     }
 
-    public void completeOrderForm(String category, String type, String quantity, String[] itemIDs, int totalPrice){
+    public void completeOrderForm(ArrayList<Furniture> list, int totalPrice, String type, String category, int quantity){
         String title = "Furniture Order Form";
         String fcd = "\n" + "\nFacultyName:" + "\nContact:" +"\nDate:";
         StringBuffer originalRequest = new StringBuffer("\n" + "Original Request: " + type + " " + category + ", " + quantity);
         
         String itemsOrdered = "\n" +"Items Ordered";
-        for (int i = 0; i < itemIDs.length; i++)
+        System.out.println("HEre");
+        for (int i = 0; i < list.size(); i++)
         {
-            itemsOrdered += "\n" + "ID: " + itemIDs[i];
+            itemsOrdered = itemsOrdered + "\n" + "ID: " + list.get(i).getId();
+            System.out.println("HEre");
         }
 
         File newfile = new File("Furniture Order Form.txt"); // created a File object called newfile
@@ -74,7 +81,7 @@ public class FileIO{
             pw.println(fcd);
             pw.println(originalRequest);
             pw.println(itemsOrdered);
-            pw.print("\n"+totalPrice);
+            pw.print("\n"+"Total Price: $" +totalPrice);
             pw.close();
         } 
         catch (IOException e)
