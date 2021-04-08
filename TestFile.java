@@ -297,20 +297,25 @@ public void testRemoveFurnitureMethod()
 }
 
 @Test 
-public void testAddingNewChairToDatabase()
+public void testAddFurnitureToInventory()
 {
-        FunTestFile object = new FunTestFile(); 
-        object.insertNewChair("C1234", "cool", "Y", "Y", "Y", "Y", "120", "000");
-        String type = "cool"; 
-        //checking if this method actually created a new chair in the database 
-        String expResult= "false";
-        String result= "true";
+        FurnitureDb furnitureObject = new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
+        furnitureObject.initializeConnection();
+        ArrayList<Boolean> components1 = new ArrayList<Boolean>();
+        components1.add(false);
+        components1.add(true);
+        components1.add(false);
+        components1.add(true);
+        Furniture testObject = new Furniture("C9890", "Mesh", components1, 50, "003");
+        furnitureObject.addFurnitureToInventory(testObject, "chair");
+        String expResult= "true";
+        String result= "false";
         try{
-            Statement myStmtOne= dbConnect.createStatement();
-            results = myStmtOne.executeQuery("SELECT type FROM chair WHERE type= " + type);
+            Statement myStmtOne = furnitureObject.getDbconnect().createStatement();
+            ResultSet results = myStmtOne.executeQuery("SELECT id FROM chair WHERE id = " + "C9890");
         if((results.next()))
         {
-            expResult="true";
+            result="true";
         }
         myStmtOne.close();
         }catch (SQLException ex) {
