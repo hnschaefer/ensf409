@@ -362,4 +362,68 @@ public class FurnitureDb{
             e.printStackTrace();
         }
     }
+
+    public void addFurnitureToInventory(Furniture furniture, String category){
+        // Connection to database, and creation of SQL query
+        ArrayList<String> componentNames = new ArrayList<String>();
+
+        // Add component names of category to list componentNames
+        try{
+            Statement stmt = dbConnect.createStatement();
+            String query = "SELECT * FROM inventory." + category;
+            results = stmt.executeQuery(query);
+            resultsMeta = results.getMetaData();
+            int columns = resultsMeta.getColumnCount();
+            for(int i = 3; i < columns - 1; i++){
+                componentNames.add(resultsMeta.getColumnName(i));
+            }
+            stmt.close();
+        }
+
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        try {
+            // Insert furniture into database
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO inventory.");
+            queryBuilder.append(category);
+            queryBuilder.append(" (ID, Type, ");
+            for(int i = 0; i < componentNames.size(); i++){
+                queryBuilder.append(componentNames.get(i));
+                queryBuilder.append(", ");
+            }
+            queryBuilder.append("Price, ManuID) VALUES (");
+            for(int j = 0; j < componentNames.size(); j ++){
+                if(j < componentNames.size() - 1){
+                    queryBuilder.append("?,");
+                }
+                else{
+                    queryBuilder.append("?)");
+                }
+            }
+            
+            String query = queryBuilder.toString();
+            PreparedStatement stmt = dbConnect.prepareStatement(query);
+            
+            stmt.setString(1, furniture.getId());
+            stmt.setString(2, furniture.getType());
+            int i = 0;
+            int j = 3;
+            for(i = 0; i < componentNames.size(); i++){
+                stmt.setString(j, componentNames.get(i));
+                j++;
+            }
+
+            stmt.setString(i, String.valueOf(furniture.getPrice()));
+            stmt.setString(i + 1, furniture.getManuId());
+
+            stmt.executeUpdate();
+            stmt.close();
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+        } 
+    }
 }
