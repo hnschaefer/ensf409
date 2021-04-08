@@ -12,6 +12,7 @@ public class Main {
     private static FileIO blank;
     private static FurnitureDb database;
     private static ArrayList<Furniture> furnitureList;
+    private static ArrayList<Manufacturer> manufacturers;
 
     public static void main (String[] args){   
         // Take user input
@@ -43,8 +44,7 @@ public class Main {
         
         // If no items can be fulfilled, end program
         if (maxQuantity == 0){
-            ArrayList<Manufacturer> manufacturers = 
-                        database.manufacturerSuggestion(category);
+            manufacturers = database.manufacturerSuggestion(category);
             // ** send to FileIO for printing **
 
             System.out.println("The availability of " + type.toLowerCase() + 
@@ -64,8 +64,7 @@ public class Main {
 
         // If some items can be fulfilled, but not all
         else if(maxQuantity < desiredQuant){
-            ArrayList<Manufacturer> manufacturers = 
-                        database.manufacturerSuggestion(category);
+            manufacturers = database.manufacturerSuggestion(category);
 
             System.out.println("The availability of " + type.toLowerCase() + 
                         " " + category + "s is " + maxQuantity + ".");
