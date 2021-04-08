@@ -108,7 +108,13 @@ public class UserIO{
             }
         }
 
-        setType(this.type.substring(0,1).toUpperCase() + this.type.substring(1).toLowerCase());
+        if(this.type.equals("swing arm")){
+            setType("Swing Arm");
+        }
+        
+        else{
+            setType(this.type.substring(0,1).toUpperCase() + this.type.substring(1).toLowerCase());
+        }
         
         System.out.println("Enter number of items: ");
         setQuantity(Integer.parseInt(input.nextLine()));
