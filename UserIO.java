@@ -21,24 +21,67 @@ public class UserIO{
         this.quantity = 0;
     }
 
-    public UserIO(String category, String type, int quantity){
-        this.category = category;
-        this.type = type;
-        this.quantity = quantity;
+    public UserIO(String category, String type, String quantity){
+        setCategory(category);
+        setType(type);
+        setQuantity(quantity);
     }
 
-    public void setCategory(String category)
+    public void setCategory(String furnitureCategory)
     {
-        this.category = category;
+        if(!(furnitureCategory.equals("chair")) && !(furnitureCategory.equals("desk")) && !(furnitureCategory.equals("lamp")) && !(furnitureCategory.equals("filing")))
+        {
+            throw new IllegalArgumentException("The category entered is invalid and does not exist in the database.");
+        }
+        this.category = furnitureCategory;
     }
 
-    public void setType(String type)
+    public void setType(String furnitureType)
     {
-        this.type = type;
+        if(this.category.equals("chair"))
+        {
+            if(!(furnitureType.equals("Kneeling")) && !(furnitureType.equals("Task")) && !(furnitureType.equals("Mesh")) 
+               && !(furnitureType.equals("Executive")) && !(furnitureType.equals("Ergonomic"))){
+                    throw new IllegalArgumentException("The type entered is invalid and does not exist in the table chair.");
+               }
+        }
+
+        if(this.category.equals("desk"))
+        {
+            if(!(furnitureType.equals("Standing")) && !(furnitureType.equals("Adjustable")) && !(furnitureType.equals("Traditional")))
+            {
+                throw new IllegalArgumentException("The type entered is invalid and does not exist in the table desk.");
+            }
+        }
+
+        if(this.category.equals("lamp"))
+        {
+            if(!(furnitureType.equals("Desk")) && !(furnitureType.equals("Study")) && !(furnitureType.equals("Swing Arm")))
+            {
+                throw new IllegalArgumentException("The type entered is invalid and does not exist in the table lamp.");
+            }
+        }
+
+        if(this.category.equals("filing"))
+        {
+            if(!(furnitureType.equals("Small")) && !(furnitureType.equals("Medium")) && !(furnitureType.equals("Large")))
+            {
+                throw new IllegalArgumentException("The type entered is invalid and does not exist in the table filing.");
+            }
+        }
+        this.type = furnitureType;
     }
-    public void setQuantity(int quantity)
+    public void setQuantity(String number)
     {
-        this.quantity = quantity;
+        try
+        {
+            int a = Integer.parseInt(number);
+        }
+        catch (NumberFormatException e)
+        {
+            throw new IllegalArgumentException("The number of items entered is not an integer.");
+        }
+        this.quantity = Integer.parseInt(number);
     }
 
     public String getCategory(){
@@ -60,7 +103,6 @@ public class UserIO{
         
         System.out.println("Enter furniture category: ");
         setCategory(input.nextLine());
-        this.category.toLowerCase();
         
         if(!(this.category.equals("chair")) && !(this.category.equals("desk")) && !(this.category.equals("lamp")) && !(this.category.equals("filing")))
         {
@@ -70,54 +112,9 @@ public class UserIO{
 
         System.out.println("Enter furniture type: ");
         setType(input.nextLine());
-        this.type.toLowerCase();
-
-        if(this.category.equals("chair"))
-        {
-            if(!(this.type.equals("kneeling")) && !(this.type.equals("task")) && !(this.type.equals("mesh")) 
-               && !(this.type.equals("executive")) && !(this.type.equals("ergonomic"))){
-                    input.close();
-                    throw new IllegalArgumentException("The type entered is invalid and does not exist in the table chair.");
-               }
-        }
-
-        if(this.category.equals("desk"))
-        {
-            if(!(this.type.equals("standing")) && !(this.type.equals("adjustable")) && !(this.type.equals("traditional")))
-            {
-                input.close();
-                throw new IllegalArgumentException("The type entered is invalid and does not exist in the table desk.");
-            }
-        }
-
-        if(this.category.equals("lamp"))
-        {
-            if(!(this.type.equals("desk")) && !(this.type.equals("study")) && !(this.type.equals("swing arm")))
-            {
-                input.close();
-                throw new IllegalArgumentException("The type entered is invalid and does not exist in the table lamp.");
-            }
-        }
-
-        if(this.category.equals("filing"))
-        {
-            if(!(this.type.equals("small")) && !(this.type.equals("medium")) && !(this.type.equals("large")))
-            {
-                input.close();
-                throw new IllegalArgumentException("The type entered is invalid and does not exist in the table filing.");
-            }
-        }
-
-        if(this.type.equals("swing arm")){
-            setType("Swing Arm");
-        }
-        
-        else{
-            setType(this.type.substring(0,1).toUpperCase() + this.type.substring(1).toLowerCase());
-        }
         
         System.out.println("Enter number of items: ");
-        setQuantity(Integer.parseInt(input.nextLine()));
+        setQuantity(input.nextLine());
 
         input.close();
     }
