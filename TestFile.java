@@ -18,7 +18,7 @@ import java.util.*;
 import jdk.jfr.Timestamp;
 
 public class TestFile {
-/* The following method checks if the UserIO constructor
+/** The following method checks if the UserIO constructor
 * initializes the data members inside the Class Manufacturer.
 */
 @Test
@@ -84,7 +84,7 @@ public void testValidQuantitySetter()
     userObject.setCategory("g");
 }
 
-/* The following method checks if the Manufacturer constructor
+/** The following method checks if the Manufacturer constructor
 * initializes the data members inside the Class Manufacturer.
 */
 
@@ -96,7 +96,7 @@ public void checkManufacturerConstructor()
     String expResult= "name";
     assertEquals("The constructor failed to initialize a data member.", expResult, result);
 }
-/* The following method checks if the Furniture constructor
+/**The following method checks if the Furniture constructor
 * initializes the data members inside the Class Furniture.
 */
 @Test 
@@ -109,7 +109,7 @@ public void checkFurnitureConstructor()
     String expResult= "type";
     assertEquals("The constructor failed to initialize a data member.", expResult, result);
 }
-/* The following method checks if the FurnitureDb constructor 
+/**The following method checks if the FurnitureDb constructor 
  * initializes the data members in the class properly.
  */
 @Test
@@ -121,7 +121,7 @@ public void checkFurnitureDbConstructor()
  assertEquals("The constructor failed to initialize a data member.", expResult, result);
 }
 
-/* The following test called checkDatabaseConnection
+/**The following test called checkDatabaseConnection
  * checks if a connection with the database has been sucessfully made
  */
 @Test
@@ -150,7 +150,7 @@ public void checkDatabaseConnection()
     assertEquals("Connection with database failed.", expResult, result);
 }
 
-/* The following test called checkFurnitureFinder()
+/**The following test called checkFurnitureFinder()
  * checks if the method FurnitureFinder() successfully selects
  * the specified category and type of the furniture from the database. 
  */
@@ -181,7 +181,7 @@ public void checkFurnitureFinder()
     assertEquals("The method called checkFurnitureFinder inside the class FurnitureDb does not return an arraylist.", testObject, furnitureList0);
 }
 
-/* The following test called checkComponentCounter()
+/**The following test called checkComponentCounter()
  * checks if the method called componentCounter() successfully returns the
  * quantity of a specified furniture which was asked for. 
  */
@@ -197,7 +197,7 @@ public void checkComponentCounter()
     assertEquals("The method componentCounter does not return correct value.", 1, counter);
 }
 
-/* The following test called testBlankOrderFormMethod()
+/**The following test called testBlankOrderFormMethod()
  * checks if the method called blankOrderFrom successfully 
  * creates a new file.
  */
@@ -211,7 +211,7 @@ public void testBlankOrderFormMethod()
         assertTrue(file.exists());
 }
 
-/* The following test called testBlankOrderFormContents()
+/**The following test called testBlankOrderFormContents()
  * checks if the method called blankOrderFrom successfully 
  * produces the correct contents in the file. 
  */
@@ -244,7 +244,7 @@ public void testBlankOrderFormMethod()
 } 
 
 
-/* The following test called testCompleteOrderFormMethod()
+/**The following test called testCompleteOrderFormMethod()
  * checks if the method called completeOrderForm successfully 
  * creates a new file.
  */
@@ -272,6 +272,10 @@ public void testCompleteOrderFormMethod()
         
         assertEquals("The file contents are incorrect", expResult, result);
 }
+/**The following test called testRemoveFurnitureMethod()
+ * checks if the method called RemoveFurnitureMethod() successfully 
+ * removes a chair from the database.
+ */
 @Test
 public void testRemoveFurnitureMethod()
 {
@@ -295,7 +299,10 @@ public void testRemoveFurnitureMethod()
         assertEquals("The method does not remove the category passed with ID.", expResult, result);
     }
 }
-
+/**The following test called testAddFurnitureToInventory()
+ * checks if the method called addFurnitureToInventory successfully 
+ * adds back the removed chair from the previous method.
+ */
 @Test 
 public void testAddFurnitureToInventory()
 {
