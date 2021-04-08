@@ -129,20 +129,24 @@ public void checkDatabaseConnection()
 {
     FurnitureDb furnitureObject= new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409"); // need to supply the parameters 
     furnitureObject.initializeConnection();
-    String expResult= "false";
-    String result= "true";
+    int expResult = 1;
+    int result = 0;
     try{
         Statement myStmtOne = furnitureObject.getDbconnect().createStatement();
-        ResultSet results = myStmtOne.executeQuery("SELECT type FROM chair WHERE type = " + "mesh");
-        if((results.next()))
+        ResultSet results = myStmtOne.executeQuery("SELECT Type FROM chair");
+        while(results.next())
         {
-            expResult = "true";
+            if(results.getString("Type").equals("Task"))
+            {
+                result = 1;
+            }
         }
     myStmtOne.close();
+    results.close();
     }catch (SQLException ex) {
         ex.printStackTrace();
     }
-    furnitureObject.close();
+    //furnitureObject.close();
     assertEquals("The method called insertNewChair inside the class FunTestFile does not insert a new chair into the database.", expResult, result);
 }
 
@@ -159,13 +163,13 @@ public void checkFurnitureFinder()
     Furniture furnitureList0 = null;
     for (int i = 0; i < furnitureList.size(); i++)
     {
-        if (furnitureList.get(i).getId().equals("C0942"))
+        if (furnitureList.get(i).id.equals("C0942"))
         {
             furnitureList0 = furnitureList.get(i);
             break;
         }
     }
-    furnitureObject.close();
+    
     ArrayList<Boolean> components1 = new ArrayList<Boolean>();
     components1.add(true);
     components1.add(false);
@@ -173,6 +177,7 @@ public void checkFurnitureFinder()
     components1.add(true);
 
     Furniture testObject = new Furniture("C0942", "Mesh", components1, 175, "005");
+    furnitureObject.close();
     assertEquals("The method called checkFurnitureFinder inside the class FurnitureDb does not return an arraylist.", testObject, furnitureList0);
 }
 
@@ -187,6 +192,7 @@ public void checkComponentCounter()
     furnitureObject.initializeConnection();
     ArrayList<Furniture> furnitureList = furnitureObject.furnitureFinder("chair", "Mesh");
     int counter = furnitureObject.componentCounter(furnitureList, 3);
+    System.out.println(counter);
     furnitureObject.close();
     assertEquals("The method componentCounter does not return correct value.", 1, counter);
 }
@@ -280,7 +286,7 @@ public void testBlankOrderFormMethod()
         Furniture testObject = new Furniture("C0942", "Mesh", components1, 175, "005");
         ArrayList <Furniture> list = new ArrayList<>();
         list.add(testObject);
-        fileObject.completeOrderForm(list, 150, "mesh", "2", );
+        fileObject.completeOrderForm(list, 150, "Mesh", "2");
         String category= "chair";
         String type= "mesh";
         int quantity= 2;
@@ -292,27 +298,25 @@ public void testBlankOrderFormMethod()
         
         assertEquals("The file contents are incorrect", expResult, result);
     }
-@Test
-public void testRemoveFurnitureMethod()
-{
-    FurnitureDb furnitureObject = new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
-    furnitureObject.initializeConnection();
-    furnitureObject.removeFurnitureFromInventory("chair", "C9890");
-    String expResult ="false";
-    String result = "true";
-    try{
-        Statement myStmtOne = furnitureObject.getDbconnect().createStatement();
-        ResultSet results = myStmtOne.executeQuery("SELECT id FROM chair WHERE id = " + "C9890");
-        if(!(results.next()))
-        {
-            expResult = "true";
+    @Test
+    public void testRemoveFurnitureMethod()
+    {
+        FurnitureDb furnitureObject = new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
+        furnitureObject.initializeConnection();
+        furnitureObject.removeFurnitureFromInventory("chair", "C9890");
+        String expResult ="false";
+        String result = "true";
+        try{
+            Statement myStmtOne = furnitureObject.getDbconnect().createStatement();
+            ResultSet results = myStmtOne.executeQuery("SELECT id FROM chair WHERE id = " + "C9890");
+            if(!(results.next()))
+            {
+                expResult = "true";
+            }
+        myStmtOne.close();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
         }
-    myStmtOne.close();
-    }catch (SQLException ex) {
-        ex.printStackTrace();
+        assertEquals("The method componentCounter does not return correct value.", expResult, result);
     }
-    assertEquals("The method componentCounter does not return correct value.", expResult, result);
 }
-}
-
-
