@@ -147,7 +147,7 @@ public void checkDatabaseConnection()
         ex.printStackTrace();
     }
     //furnitureObject.close();
-    assertEquals("The method called insertNewChair inside the class FunTestFile does not insert a new chair into the database.", expResult, result);
+    assertEquals("Connection with database failed.", expResult, result);
 }
 
 /* The following test called checkFurnitureFinder()
@@ -197,32 +197,6 @@ public void checkComponentCounter()
     assertEquals("The method componentCounter does not return correct value.", 1, counter);
 }
 
-
-// this test performs if the method called insertNewChair
-// actually inserts a new chair into the database 
-/*@Test 
-public void testAddingNewChairToDatabase()
-{
-        FunTestFile object = new FunTestFile(); 
-        object.insertNewChair("C1234", "cool", "Y", "Y", "Y", "Y", "120", "000");
-        String type = "cool"; 
-        //checking if this method actually created a new chair in the database 
-        String expResult= "false";
-        String result= "true";
-        try{
-            Statement myStmtOne= dbConnect.createStatement();
-            results = myStmtOne.executeQuery("SELECT type FROM chair WHERE type= " + type);
-        if((results.next()))
-        {
-            expResult="true";
-        }
-        myStmtOne.close();
-        }catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        assertEquals("The method called insertNewChair inside the class FunTestFile does not insert a new chair into the database.", expResult, result);
-}*/
-
 /* The following test called testBlankOrderFormMethod()
  * checks if the method called blankOrderFrom successfully 
  * creates a new file.
@@ -241,7 +215,7 @@ public void testBlankOrderFormMethod()
  * checks if the method called blankOrderFrom successfully 
  * produces the correct contents in the file. 
  */
-/* @Test
+ @Test
 public void testBlankOrderFormContents()
 {
     FileIO fileObject= new FileIO();
@@ -253,8 +227,8 @@ public void testBlankOrderFormContents()
                         "\nContact:" +"\nDate:"+"\n"+"\nOriginal Request:"+"\n"+"\nItems Ordered"+
                         "\n"+"\nTotalPrice:";
     assertEquals("The file contents are incorrect", expResult, result);
-} */
-/*@Test
+} 
+@Test
 public void testBlankOrderFormMethod()
 {
     FileIO fileObject= new FileIO();
@@ -267,16 +241,16 @@ public void testBlankOrderFormMethod()
     }
     String expResult = "true";
     assertEquals("The method called blankOrderForm failed to create the file", expResult, result);
-} */
+} 
 
 
 /* The following test called testCompleteOrderFormMethod()
  * checks if the method called completeOrderForm successfully 
  * creates a new file.
  */
-    @Test
-    public void testCompleteOrderFormMethod()
-    {
+@Test
+public void testCompleteOrderFormMethod()
+{
         FileIO fileObject= new FileIO();
         ArrayList<Boolean> components1 = new ArrayList<Boolean>();
         components1.add(true);
@@ -297,9 +271,10 @@ public void testBlankOrderFormMethod()
         "\n" + "Original Request: " + type + " " + category + ", " + quantity;
         
         assertEquals("The file contents are incorrect", expResult, result);
-    }
-    @Test
-    public void testRemoveFurnitureMethod()
+}
+@Test
+public void testRemoveFurnitureMethod()
+{
     {
         FurnitureDb furnitureObject = new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
         furnitureObject.initializeConnection();
@@ -317,6 +292,32 @@ public void testBlankOrderFormMethod()
         }catch (SQLException ex) {
             ex.printStackTrace();
         }
-        assertEquals("The method componentCounter does not return correct value.", expResult, result);
+        assertEquals("The method does not remove the category passed with ID.", expResult, result);
     }
 }
+
+@Test 
+public void testAddingNewChairToDatabase()
+{
+        FunTestFile object = new FunTestFile(); 
+        object.insertNewChair("C1234", "cool", "Y", "Y", "Y", "Y", "120", "000");
+        String type = "cool"; 
+        //checking if this method actually created a new chair in the database 
+        String expResult= "false";
+        String result= "true";
+        try{
+            Statement myStmtOne= dbConnect.createStatement();
+            results = myStmtOne.executeQuery("SELECT type FROM chair WHERE type= " + type);
+        if((results.next()))
+        {
+            expResult="true";
+        }
+        myStmtOne.close();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        assertEquals("The method does not add to the database.", expResult, result);
+}
+}
+
+
