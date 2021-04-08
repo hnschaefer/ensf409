@@ -1,6 +1,6 @@
 /**
  @author 
- @version
+ @version 1.6
  
  @since 1.0
 */
@@ -10,10 +10,20 @@ package edu.ucalgary.ensf409;
 import java.util.Scanner;
 
 public class UserIO{
+
+    /**
+     * This class prompts the user in the command line to enter the category, type of furniture 
+     * and the quantity of furniture they would like to order. It contains a method called userInput()
+     * that uses a scanner to read input from the terminal. 
+     */
+
+
+    // Variables for category, type and quantity
     private String category;
     private String type;
     private int quantity;
 
+    // Default constructor for UserIO
     public UserIO()
     {
         this.category = null;
@@ -21,12 +31,15 @@ public class UserIO{
         this.quantity = 0;
     }
 
+    // Constructor for UserIO that takes in String type category, type and quantity
     public UserIO(String category, String type, String quantity){
         setCategory(category);
         setType(type);
         setQuantity(quantity);
     }
 
+    // Setter method for category, it throws IllegalArgumentException if format is incorrect 
+    // and if the category does not exist
     public void setCategory(String furnitureCategory)
     {
         if(!(furnitureCategory.equals("chair")) && !(furnitureCategory.equals("desk")) && !(furnitureCategory.equals("lamp")) && !(furnitureCategory.equals("filing")))
@@ -36,6 +49,8 @@ public class UserIO{
         this.category = furnitureCategory;
     }
 
+    // Setter method for type, it throws IllegalArgumentException if format is incorrect 
+    // and if the type does not exist
     public void setType(String furnitureType)
     {
         if(this.category.equals("chair"))
@@ -71,6 +86,8 @@ public class UserIO{
         }
         this.type = furnitureType;
     }
+
+    // Setter method for quantity, it throws IllegalArgumentException if the quantity provided is not an integer.
     public void setQuantity(String number)
     {
         try
@@ -84,19 +101,29 @@ public class UserIO{
         this.quantity = Integer.parseInt(number);
     }
 
+    // Getter method for category
+    // returns a category string
     public String getCategory(){
         return this.category;
     }
 
+    // Getter method for type
+    // returns a type string
     public String getType(){
         return this.type;
     }
 
+    // Getter method for quantity
+    // returns a ingeter quantity
     public int getQuantity(){
         return this.quantity;
     }
     
-    // call this method in main to prompt userInput
+    
+    
+    // Method userInput(): call this method in main to prompt user input 
+    // This method uses a scanner to take in input from the terminal
+    // no return value and arguments
     public void userInput()
     {
         Scanner input = new Scanner(System.in);

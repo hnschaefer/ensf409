@@ -4,35 +4,30 @@ import java.util.ArrayList;
 /**
 @author Lubaba Sheikh <a href="mailto:lubaba.sheikh@ucalgary.ca">
 lubaba.sheikh@ucalgary.ca</a>
-@version 1.2
+@version 1.4
 @since 1.0
 */
 
 import java.io.*;
 
 public class FileIO{
-    private String in;
-    private String out;
 
-    public FileIO(String in, String out){
-        this.in = in;
-        this.out = out;
-    }
+    /**
+     * Class FileIO consists of two methods called blankOrderForm() and completeOrderForm().
+     * blankOrderForm() creates an order form that is blank with no price and item IDs.
+     * completeOrderForm() creates a filled out order form with the category, type and quantity as well as the item IDs 
+     * of the furnitures and the total price
+     */
+    
     public FileIO()
     {
-        
-    }
 
-    public String getIn(){
-        return this.in;
-    }
-
-    public String getOut(){
-        return this.out;
     }
 
 
-
+    // blankOrderForm() creates an order form that is blank with no price and item IDs.
+    // no return value
+    // takes in no arguments
     public void blankOrderForm()
     {
         StringBuffer form = new StringBuffer("Furniture Order Form\n" + "\nFacultyName:"+
@@ -56,6 +51,11 @@ public class FileIO{
         }
     }
 
+    
+    // completeOrderForm() creates a filled out order form with the category, type and quantity as well as the item IDs 
+    // of the furnitures and the total price
+    // not return value
+    // takes in arguments ArrayList<Furniture> list, int totalPrice, String type, String category, int originalQuant and int availableQuant
     public void completeOrderForm(ArrayList<Furniture> list, int totalPrice, String type, String category, int originalQuant, int availableQuant){
         String title = "Furniture Order Form";
         String fcd = "\n" + "\nFacultyName:" + "\nContact:" +"\nDate:";
@@ -90,4 +90,5 @@ public class FileIO{
             e.printStackTrace();
         }
     }
+    
 }
