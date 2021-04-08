@@ -130,12 +130,6 @@ public class UserIO{
         
         System.out.println("Enter furniture category: ");
         setCategory(input.nextLine());
-        
-        if(!(this.category.equals("chair")) && !(this.category.equals("desk")) && !(this.category.equals("lamp")) && !(this.category.equals("filing")))
-        {
-            input.close();
-            throw new IllegalArgumentException("The category entered is invalid and does not exist in the database.");
-        }
 
         System.out.println("Enter furniture type: ");
         setType(input.nextLine());
