@@ -395,35 +395,38 @@ public class FurnitureDb{
             }
             queryBuilder.append("Price, ManuID) VALUES (");
             for(int j = 0; j < componentNames.size(); j ++){
-                if(j < componentNames.size() - 1){
+                if(j < componentNames.size()){
                     queryBuilder.append("?,");
                 }
-                else{
-                    queryBuilder.append("?)");
-                }
             }
+            queryBuilder.append("?,?,?,?)");
+            System.out.println(queryBuilder);
             
             String query = queryBuilder.toString();
             PreparedStatement stmt = dbConnect.prepareStatement(query);
             
             stmt.setString(1, furniture.getId());
             stmt.setString(2, furniture.getType());
-            int i = 0;
             int j = 3;
-            for(i = 0; i < componentNames.size(); i++){
-                stmt.setString(j, componentNames.get(i));
+            for(int i = 0; i < componentNames.size(); i++){
+                if(furniture.getComponents().get(i)){
+                    stmt.setString(j, "Y");
+                }
+                else{
+                    stmt.setString(j, "N");
+                }
                 j++;
             }
+            stmt.setInt(j, furniture.getPrice());
+            j++;
+            stmt.setString(j, furniture.getManuId());
 
-            stmt.setString(i, String.valueOf(furniture.getPrice()));
-            stmt.setString(i + 1, furniture.getManuId());
-
-            stmt.executeUpdate();
+            int rows = stmt.executeUpdate();
             stmt.close();
         }
-        catch(SQLException ex)
+        catch(SQLException e)
         {
-            ex.printStackTrace();
+            e.printStackTrace();
         } 
     }
 }
