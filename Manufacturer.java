@@ -1,23 +1,17 @@
 /**
  @author Heidi Schaefer <a 
     href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
- 
  @version 1.0
- 
  @since 1.0
 */
 
 package edu.ucalgary.ensf409;
 
-import java.sql.*;
-import java.io.*;
-import java.util.*;
-
 public class Manufacturer{
-    public String manuID;
-    public String name;
-    public String phone;
-    public String province;
+    private String manuID;
+    private String name;
+    private String phone;
+    private String province;
 
     public Manufacturer(String manuID, String name, String phone, String province){
         this.manuID = manuID;
@@ -26,20 +20,19 @@ public class Manufacturer{
         this.province = province;
     }
 
-    public String getManuId()
-    {
+    public String getManuID(){
         return this.manuID;
     }
-    public String getName()
-    {
+
+    public String getName(){
         return this.name;
     }
-    public String getPhone()
-    {
+
+    public String getPhone(){
         return this.phone;
     }
-    public String getProvince()
-    {
-        return this.province; 
+
+    public String getProvince(){
+        return this.province;
     }
 }
