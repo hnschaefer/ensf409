@@ -292,4 +292,27 @@ public void testBlankOrderFormMethod()
         
         assertEquals("The file contents are incorrect", expResult, result);
     }
+@Test
+public void testRemoveFurnitureMethod()
+{
+    FurnitureDb furnitureObject = new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
+    furnitureObject.initializeConnection();
+    furnitureObject.removeFurnitureFromInventory("chair", "C9890");
+    String expResult ="false";
+    String result = "true";
+    try{
+        Statement myStmtOne = furnitureObject.getDbconnect().createStatement();
+        ResultSet results = myStmtOne.executeQuery("SELECT id FROM chair WHERE id = " + "C9890");
+        if(!(results.next()))
+        {
+            expResult = "true";
+        }
+    myStmtOne.close();
+    }catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    assertEquals("The method componentCounter does not return correct value.", expResult, result);
 }
+}
+
+
