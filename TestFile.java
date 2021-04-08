@@ -10,6 +10,7 @@ package edu.ucalgary.ensf409;
 import static org.junit.Assert.*;
 import org.junit.*;
 import java.io.*;
+import java.sql.SQLException;
 import java.util.*;
 import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 
@@ -83,7 +84,20 @@ public void checkDatabaseConnection()
 {
     FurnitureDb furnitureObject= new FurnitureDb(); // need to supply the parameters 
     furnitureObject.initializeConnection();
-
+    String expResult= "false";
+    String result= "true";
+    try{
+        Statement myStmtOne= dbConnect.createStatement();
+        results = myStmtOne.executeQuery("SELECT type FROM chair WHERE type= " + "mesh")
+    if((results.next()))
+    {
+        expResult="true";
+    }
+    myStmtOne.close();
+    }catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    assertEquals("The method called insertNewChair inside the class FunTestFile does not insert a new chair into the database.", expResult, result);
 }
 
 /* The following test called checkFurnitureFinder()
