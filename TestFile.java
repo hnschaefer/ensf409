@@ -10,14 +10,14 @@ package edu.ucalgary.ensf409;
 import static org.junit.Assert.*;
 import org.junit.*;
 import java.io.*;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
-import org.junit.contrib.java.lang.system.ExpectedSystemExit;
+//import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 
-import jdk.internal.jshell.tool.MessageHandler;
+//import jdk.internal.jshell.tool.MessageHandler;
 import jdk.jfr.Timestamp;
 
-public class TestFile(){
+public class TestFile {
 /* The following method checks if the UserIO constructor
 * initializes the data members inside the Class Manufacturer.
 */
@@ -33,11 +33,11 @@ public void checkUserIOConstructor()
 * correctly throws an error if an invalid category/type is entered 
 * which does not exist in the database. 
 */
-@Test(expected=IllegalArgumentException.class)
+@Test(expected = IllegalArgumentException.class)
 public void checkUserInputMethod()
 {
     UserIO userObject = new UserIO("shelf","wooden", 2);
-    String result = UserIO.userInput();
+    userObject.userInput();
 }
 
 /* The following method checks if the Manufacturer constructor
@@ -59,7 +59,7 @@ public void checkFurnitureConstructor()
 {
     ArrayList<Boolean> list = new ArrayList<Boolean>();
     list.add(true);
-    Furniture furnitureObject= new Furniture("1234", "type", list, "120","12345");
+    Furniture furnitureObject= new Furniture("1234", "type", list, 120,"12345");
     String result = furnitureObject.getType();
     String expResult= "type";
     assertEquals("The constructor failed to initialize a data member.", expResult, result);
@@ -82,17 +82,17 @@ public void checkFurnitureDbConstructor()
 @Test
 public void checkDatabaseConnection()
 {
-    FurnitureDb furnitureObject= new FurnitureDb(); // need to supply the parameters 
+    FurnitureDb furnitureObject= new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409"); // need to supply the parameters 
     furnitureObject.initializeConnection();
     String expResult= "false";
     String result= "true";
     try{
-        Statement myStmtOne= dbConnect.createStatement();
-        results = myStmtOne.executeQuery("SELECT type FROM chair WHERE type= " + "mesh")
-    if((results.next()))
-    {
-        expResult="true";
-    }
+        Statement myStmtOne = furnitureObject.getDbconnect().createStatement();
+        ResultSet results = myStmtOne.executeQuery("SELECT type FROM chair WHERE type = " + "mesh");
+        if((results.next()))
+        {
+            expResult = "true";
+        }
     myStmtOne.close();
     }catch (SQLException ex) {
         ex.printStackTrace();
@@ -116,8 +116,12 @@ public void checkFurnitureFinder()
 @Test 
 public void checkComponentCounter()
 {
-
+    FurnitureDb furnitureObject = new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
+    ArrayList<Furniture> furnitureList = furnitureObject.furnitureFinder("chair", "mesh");
+    int counter = furnitureObject.componentCounter(furnitureList, 3);
+    assertEquals("The method componentCounter does not return correct value.", 1, counter);
 }
+
 
 // this test performs if the method called insertNewChair
 // actually inserts a new chair into the database 
@@ -130,7 +134,6 @@ public void testAddingNewChairToDatabase()
         //checking if this method actually created a new chair in the database 
         String expResult= "false";
         String result= "true";
-
         try{
             Statement myStmtOne= dbConnect.createStatement();
             results = myStmtOne.executeQuery("SELECT type FROM chair WHERE type= " + type);
@@ -196,22 +199,22 @@ public void testBlankOrderFormMethod()
  * checks if the method called completeOrderForm successfully 
  * creates a new file.
  */
-@Test
-public void testCompleteOrderFormMethod()
-{
-    FileIO fileObject= new FileIO();
-    ArrayList <Furniture> list= new ArrayList<> ();
-    list.add("chair");
-    fileObject.completeOrderForm(list, 150, "mesh", "2");
-    String category= "chair";
-    String type= "mesh";
-    int quantity= 2;
-    File file = new File("Furniture Order Form.txt");
-    Sting filePath = file.getPath(); //put in filePath
-    String result = readFile(filePath);
-    String expResult= "\n" + "\nFacultyName:" + "\nContact:" +"\nDate:" + 
-    "\n" + "Original Request: " + type + " " + category + ", " + quantity;
-    
-    assertEquals("The file contents are incorrect", expResult, result);
-}
+    @Test
+    public void testCompleteOrderFormMethod()
+    {
+        FileIO fileObject= new FileIO();
+        ArrayList <Furniture> list = new ArrayList<> ();
+        list.add("chair");
+        fileObject.completeOrderForm(list, 150, "mesh", "2");
+        String category= "chair";
+        String type= "mesh";
+        int quantity= 2;
+        File file = new File("Furniture Order Form.txt");
+        Sting filePath = file.getPath(); //put in filePath
+        String result = readFile(filePath);
+        String expResult= "\n" + "\nFacultyName:" + "\nContact:" +"\nDate:" + 
+        "\n" + "Original Request: " + type + " " + category + ", " + quantity;
+        
+        assertEquals("The file contents are incorrect", expResult, result);
+    }
 }
