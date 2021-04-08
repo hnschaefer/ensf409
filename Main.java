@@ -8,16 +8,18 @@ package edu.ucalgary.ensf409;
 import java.util.*;
 
 public class Main {
-    private static UserIO userIO = new UserIO();
-    private static FileIO blank = new FileIO();
+    private static UserIO userIO;
+    private static FileIO blank;
     private static FurnitureDb database;
     private static ArrayList<Furniture> furnitureList;
 
     public static void main (String[] args){   
         // Take user input
+        userIO = new UserIO();
         userIO.userInput();
         
         // Create blank form
+        blank = new FileIO();
         blank.blankOrderForm();
 
         // Create variables from user input
@@ -25,6 +27,7 @@ public class Main {
         String type = userIO.getType();
         int desiredQuant = userIO.getQuantity();
         int originalQuant = desiredQuant;
+
 
         // Connection to database
         database = new FurnitureDb("jdbc:mysql://localhost/inventory", "scm", 
