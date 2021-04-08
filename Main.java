@@ -26,7 +26,7 @@ public class Main {
 
         // Connection to database
         FurnitureDb database = new FurnitureDb
-                    ("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
+                    ("jdbc:mysql://localhost/inventory", "scm", "ensf409");
         database.initializeConnection();
 
         // Create list of furniture from correct category and type
@@ -92,7 +92,7 @@ public class Main {
         
         int totalPrice = 0;
         for(int i = 0; i < cheapestList.size(); i++){
-            totalPrice += cheapestList.get(i).price;
+            totalPrice += cheapestList.get(i).getPrice();
         }
         System.out.println("The lowest price for " + desiredQuant + " " + 
                     type.toLowerCase() + " " + category + "(s) is $" + 

@@ -1,15 +1,9 @@
 /**
  @author Heidi Schaefer <a 
     href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
- 
  @version 1.1
- 
  @since 1.0
 */
-
-package edu.ucalgary.ensf409;
-
-import java.util.*;
 
 /* Furniture is a class which creates objects of type Furniture
 *  All furniture categories share similar attributes of
@@ -21,14 +15,20 @@ import java.util.*;
 *   false if it does not
 */
 
-public class Furniture{
-    public String id;
-    public String type;
-    public ArrayList<Boolean> components = new ArrayList<Boolean>();
-    public int price;
-    public String manuID;
+package edu.ucalgary.ensf409;
 
-    public Furniture(String id, String type, ArrayList<Boolean> components, int price, String manuID){
+import java.util.*;
+
+public class Furniture{
+    private String id;
+    private String type;
+    private ArrayList<Boolean> components = new ArrayList<Boolean>();
+    private int price;
+    private String manuID;
+
+    public Furniture(String id, String type, ArrayList<Boolean> components, 
+                int price, String manuID){
+
         this.id = id;
         this.type = type;
         for(int i = 0; i < components.size(); i++){
@@ -38,24 +38,23 @@ public class Furniture{
         this.manuID = manuID;
     }
 
-    public String getId()
-    {
+    public String getId(){
         return this.id;
     }
-    public String getType()
-    {
+
+    public String getType(){
         return this.type;
     }
-    public ArrayList<Boolean> getComponents()
-    {
+
+    public ArrayList<Boolean> getComponents(){
         return this.components; 
     }
-    public int getPrice()
-    {
+
+    public int getPrice(){
         return this.price;
     }
-    public String manuId()
-    {
+
+    public String manuId(){
         return this.manuID;
     }
 }
