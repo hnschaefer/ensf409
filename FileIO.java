@@ -25,9 +25,10 @@ public class FileIO{
     }
 
 
-    // blankOrderForm() creates an order form that is blank with no price and item IDs.
-    // no return value
-    // takes in no arguments
+    /* blankOrderForm() creates an order form that is blank with no price and item IDs.
+        no return value
+        takes in no arguments
+     */
     public void blankOrderForm()
     {
         StringBuffer form = new StringBuffer("Furniture Order Form\n" + "\nFacultyName:"+
@@ -52,10 +53,11 @@ public class FileIO{
     }
 
     
-    // completeOrderForm() creates a filled out order form with the category, type and quantity as well as the item IDs 
-    // of the furnitures and the total price
-    // not return value
-    // takes in arguments ArrayList<Furniture> list, int totalPrice, String type, String category, int originalQuant and int availableQuant
+    /*  completeOrderForm() creates a filled out order form with the category, type and quantity as well as the item IDs 
+        of the furnitures and the total price
+        not return value
+        takes in arguments ArrayList<Furniture> list, int totalPrice, String type, String category, int originalQuant and int availableQuant
+     */
     public void completeOrderForm(ArrayList<Furniture> list, int totalPrice, String type, String category, int originalQuant, int availableQuant){
         String title = "Furniture Order Form";
         String fcd = "\n" + "\nFacultyName:" + "\nContact:" +"\nDate:";
