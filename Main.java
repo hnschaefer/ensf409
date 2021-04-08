@@ -8,14 +8,16 @@ package edu.ucalgary.ensf409;
 import java.util.*;
 
 public class Main {
+    private static UserIO userIO = new UserIO();
+    private static FileIO blank = new FileIO();
+    private static FurnitureDb database;
+    private static ArrayList<Furniture> furnitureList;
 
     public static void main (String[] args){   
         // Take user input
-        UserIO userIO = new UserIO();
         userIO.userInput();
         
         // Create blank form
-        FileIO blank = new FileIO();
         blank.blankOrderForm();
 
         // Create variables from user input
@@ -25,13 +27,12 @@ public class Main {
         int originalQuant = desiredQuant;
 
         // Connection to database
-        FurnitureDb database = new FurnitureDb
-                    ("jdbc:mysql://localhost/inventory", "scm", "ensf409");
+        database = new FurnitureDb("jdbc:mysql://localhost/inventory", "scm", 
+                    "ensf409");
         database.initializeConnection();
 
         // Create list of furniture from correct category and type
-        ArrayList<Furniture> furnitureList = 
-                    database.furnitureFinder(category, type);
+        furnitureList = database.furnitureFinder(category, type);
         
         // Check how many items from the order can be fulfilled based on 
         //  inventory availability
@@ -62,7 +63,6 @@ public class Main {
         else if(maxQuantity < desiredQuant){
             ArrayList<Manufacturer> manufacturers = 
                         database.manufacturerSuggestion(category);
-            // ** send to FileIO for printing **
 
             System.out.println("The availability of " + type.toLowerCase() + 
                         " " + category + "s is " + maxQuantity + ".");
@@ -94,6 +94,7 @@ public class Main {
         for(int i = 0; i < cheapestList.size(); i++){
             totalPrice += cheapestList.get(i).getPrice();
         }
+
         System.out.println("The lowest price for " + desiredQuant + " " + 
                     type.toLowerCase() + " " + category + "(s) is $" + 
                     totalPrice + ".");
