@@ -429,4 +429,19 @@ public class FurnitureDb{
             e.printStackTrace();
         } 
     }
+
+    /**
+     * method close()
+     * closes objects of Connection and ResultSet
+     * catches SQLExceptions
+     * recieves no arguments and has no return value
+     */
+    public void close() {
+        try {
+            results.close();
+            dbConnect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
