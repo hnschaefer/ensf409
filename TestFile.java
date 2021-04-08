@@ -97,6 +97,7 @@ public void checkDatabaseConnection()
     }catch (SQLException ex) {
         ex.printStackTrace();
     }
+    furnitureObject.close();
     assertEquals("The method called insertNewChair inside the class FunTestFile does not insert a new chair into the database.", expResult, result);
 }
 
@@ -110,8 +111,16 @@ public void checkFurnitureFinder()
     FurnitureDb furnitureObject = new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
     furnitureObject.initializeConnection();
     ArrayList<Furniture> furnitureList = furnitureObject.furnitureFinder("chair", "Mesh");
-    Furniture furnitureList0 = furnitureList.get(1);
-
+    Furniture furnitureList0 = null;
+    for (int i = 0; i < furnitureList.size(); i++)
+    {
+        if (furnitureList.get(i).getId().equals("C0942"))
+        {
+            furnitureList0 = furnitureList.get(i);
+            break;
+        }
+    }
+    furnitureObject.close();
     ArrayList<Boolean> components1 = new ArrayList<Boolean>();
     components1.add(true);
     components1.add(false);
@@ -119,7 +128,6 @@ public void checkFurnitureFinder()
     components1.add(true);
 
     Furniture testObject = new Furniture("C0942", "Mesh", components1, 175, "005");
-
     assertEquals("The method called checkFurnitureFinder inside the class FurnitureDb does not return an arraylist.", testObject, furnitureList0);
 }
 
@@ -131,11 +139,11 @@ public void checkFurnitureFinder()
 public void checkComponentCounter()
 {
     FurnitureDb furnitureObject = new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
-    ArrayList<Furniture> furnitureList = furnitureObject.furnitureFinder("chair", "mesh");
+    furnitureObject.initializeConnection();
+    ArrayList<Furniture> furnitureList = furnitureObject.furnitureFinder("chair", "Mesh");
     int counter = furnitureObject.componentCounter(furnitureList, 3);
-    int x = 1;
-    System.out.println(counter);
-    assertEquals("The method componentCounter does not return correct value.", x, counter);
+    furnitureObject.close();
+    assertEquals("The method componentCounter does not return correct value.", 1, counter);
 }
 
 
