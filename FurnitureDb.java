@@ -31,6 +31,7 @@ public class FurnitureDb{
     public final String DBURL;
     public final String USERNAME;
     public final String PASSWORD;
+
     private Connection dbConnect;
     private ResultSet results;
     private ResultSetMetaData resultsMeta;
@@ -40,6 +41,29 @@ public class FurnitureDb{
         this.USERNAME = USERNAME;
         this.PASSWORD = PASSWORD;
     }
+
+    public String getDburl()
+    {
+        return this.DBURL;
+    }
+    public String getUsername()
+    {
+        return this.USERNAME;
+    }
+    public String getPassword()
+    {
+        return this.PASSWORD;
+    }
+    public Connection getDbconnect()
+    {
+        return this.dbConnect;
+    }
+    public ResultSet getResults()
+    {
+        return this.results;
+    }
+
+
 
     // Establish database connection
     public void initializeConnection(){
