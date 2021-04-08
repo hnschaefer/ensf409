@@ -54,7 +54,7 @@ public class Furniture{
         return this.price;
     }
 
-    public String manuId(){
+    public String getManuId(){
         return this.manuID;
     }
 }
