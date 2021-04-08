@@ -131,7 +131,7 @@ public class FurnitureDb{
     public int componentCounter(ArrayList<Furniture> furnitureList, 
             int desiredQuant){
 
-        int componentCount = furnitureList.get(0).components.size();
+        int componentCount = furnitureList.get(0).getComponents().size();
         int maybeLeast = 0;
         int availableQuant = desiredQuant;
 
@@ -140,7 +140,7 @@ public class FurnitureDb{
         //  availableQuant will update to 2)
         for(int i = 0; i < componentCount; i++){
             for(int j = 0; j < furnitureList.size(); j++){
-                if(furnitureList.get(j).components.get(i) == true){
+                if(furnitureList.get(j).getComponents().get(i) == true){
                     maybeLeast++;
                 }
             }
@@ -297,9 +297,9 @@ public class FurnitureDb{
                 int desiredQuant){
 
         int count = 0;
-        for(int i = 0; i < possibleCombo.get(0).components.size(); i++){
+        for(int i = 0; i < possibleCombo.get(0).getComponents().size(); i++){
             for(int j = 0; j < possibleCombo.size(); j++){
-                if(possibleCombo.get(j).components.get(i) == true){
+                if(possibleCombo.get(j).getComponents().get(i) == true){
                     count++;
                 }
             }
@@ -322,7 +322,7 @@ public class FurnitureDb{
 
         for(int i = 0; i < allCombinations.size(); i++){
             for(int j = 0; j < allCombinations.get(i).size(); j++){
-                sum += allCombinations.get(i).get(j).price;
+                sum += allCombinations.get(i).get(j).getPrice();
             }
             prices[i] = sum;
             sum = 0;
