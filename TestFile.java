@@ -24,25 +24,70 @@ public class TestFile {
 @Test
 public void checkUserIOConstructor()
 {
-    UserIO userObject= new UserIO("category", "type", 2);
+    UserIO userObject= new UserIO("chair", "Mesh", "2");
     String result = userObject.getCategory();
-    String expResult= "category";
+    String expResult= "chair";
     assertEquals("The constructor failed to initialize a data member.", expResult, result);
 }
-/* The following method checks if the method called userInput
-* correctly throws an error if an invalid category/type is entered 
+
+/**The following method checks if the category setter method
+* correctly throws an error if an invalid category is entered 
 * which does not exist in the database. 
 */
-/* @Test (expected = IllegalArgumentException.class)
-public void checkUserInputMethod()
+@Test (expected = IllegalArgumentException.class)
+public void testValidCategorySetter()
 {
-    UserIO userObject = new UserIO("shelf","wooden", 2);
-    userObject.userInput();
-} */
+    UserIO userObject = new UserIO();
+    userObject.setCategory("game");
+}
+
+/**The following method checks if the category setter method
+* correctly throws an error if an invalid category is entered 
+* with capitals
+*/
+@Test (expected = IllegalArgumentException.class)
+public void testCategorySetter()
+{
+    UserIO userObject = new UserIO();
+    userObject.setCategory("CHair");
+}
+
+/**The following method checks if the type setter method
+* correctly throws an error if an invalid type is entered 
+* which does not exist in the database. 
+*/
+@Test (expected = IllegalArgumentException.class)
+public void testValidTypeSetter()
+{
+    UserIO userObject = new UserIO();
+    userObject.setCategory("mario");
+}
+
+/**The following method checks if the category setter method
+* correctly throws an error if an invalid type is entered 
+* with the first letter not capitalized
+*/
+@Test (expected = IllegalArgumentException.class)
+public void testTypeSetter()
+{
+    UserIO userObject = new UserIO();
+    userObject.setCategory("mesh");
+}
+
+/**The following method checks if the Quantity setter method
+* correctly throws an error if an invalid Quantity is entered 
+*/
+@Test (expected = IllegalArgumentException.class)
+public void testValidQuantitySetter()
+{
+    UserIO userObject = new UserIO();
+    userObject.setCategory("g");
+}
 
 /* The following method checks if the Manufacturer constructor
 * initializes the data members inside the Class Manufacturer.
 */
+
 @Test
 public void checkManufacturerConstructor()
 {
@@ -145,27 +190,6 @@ public void checkComponentCounter()
     furnitureObject.close();
     assertEquals("The method componentCounter does not return correct value.", 1, counter);
 }
-@Test
-public void testRemoveFurnitureMethod()
-{
-    FurnitureDb furnitureObject = new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", "ensf409");
-    furnitureObject.initializeConnection();
-    furnitureObject.removeFurnitureFromInventory("chair", "C9890");
-    String expResult ="false";
-    String result = "true";
-    try{
-        Statement myStmtOne = furnitureObject.getDbconnect().createStatement();
-        ResultSet results = myStmtOne.executeQuery("SELECT id FROM chair WHERE id = " + "C9890");
-        if(!(results.next()))
-        {
-            expResult = "true";
-        }
-    myStmtOne.close();
-    }catch (SQLException ex) {
-        ex.printStackTrace();
-    }
-    assertEquals("The method componentCounter does not return correct value.", expResult, result);
-}
 
 
 // this test performs if the method called insertNewChair
@@ -248,9 +272,15 @@ public void testBlankOrderFormMethod()
     public void testCompleteOrderFormMethod()
     {
         FileIO fileObject= new FileIO();
-        ArrayList <Furniture> list = new ArrayList<> ();
-        list.add("chair");
-        fileObject.completeOrderForm(list, 150, "mesh", "2");
+        ArrayList<Boolean> components1 = new ArrayList<Boolean>();
+        components1.add(true);
+        components1.add(false);
+        components1.add(true);
+        components1.add(true);
+        Furniture testObject = new Furniture("C0942", "Mesh", components1, 175, "005");
+        ArrayList <Furniture> list = new ArrayList<>();
+        list.add(testObject);
+        fileObject.completeOrderForm(list, 150, "mesh", "2", );
         String category= "chair";
         String type= "mesh";
         int quantity= 2;
