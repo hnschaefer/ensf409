@@ -220,36 +220,36 @@ public void testBlankOrderFormContents()
 {
     FileIO fileObject= new FileIO();
     fileObject.blankOrderForm();
-    String file = "Blank Furniture Order Form.txt";
+    File file = new File ("Blank Furniture Order Form.txt");
     //Sting filePath = file.getPath(); //put in filePath
     //String pathPlusFileName= filePath + "Blank Furniture Order Form.txt"; 
-    String[] expected = "Furniture Order Form\n" + "\nFacultyName:"+
-                        "\nContact:" +"\nDate:"+"\n"+"\nOriginal Request:"+"\n"+"\nItems Ordered"+
-                        "\n"+"\nTotalPrice:";
-                       
+    String[] expected = {"Furniture Order Form","","FacultyName:",
+                        "Contact:" ,"Date:","","Original Request:","","Items Ordered",
+                        ""+"TotalPrice:"};
     String[] check = readFile(addPath(file));
     assertTrue("addDataElement() automatically writes when data is changed on existing file", Arrays.equals(expected, check));
 }
 // Add a directory path to a file
-public String addPath(String file) {
-    File path = new File(insert directory); //*****************INSERT DIRECTORY************************
-    File full = new File(path, file);
+public String addPath(String file) 
+{
+    //File path = new File(insert directory);
+    File full = new File(file);
     return full.getPath();
 }
 // Read in a specified file, given path+filename
-public String[] readFile(String fileAndPath) throws Exception {
+public String[] readFile(String fileAndPath) throws Exception 
+{
     BufferedReader file = new BufferedReader(new FileReader(fileAndPath));
     String tmp = new String();
     ArrayList<String> contents = new ArrayList<String>();
 
-    while ((tmp = file.readLine()) != null) {
+    while ((tmp = file.readLine()) != null) 
+    {
       contents.add(tmp);
     }
-
     file.close();
     return contents.toArray(new String[contents.size()]);
 }
-
 @Test
 public void testBlankOrderFormMethod()
 {
