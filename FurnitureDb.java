@@ -9,7 +9,7 @@
  @since 1.0
 */
 
-/* Class FurnitureDb creates a connection to the database "inventory"
+/** Class FurnitureDb creates a connection to the database "inventory"
 *  It has the following functionalities:
 *  Removal of furniture items from database
 *  Creation of lists providing desired furniture types, 
@@ -39,7 +39,8 @@ public class FurnitureDb{
     private Connection dbConnect;
     private ResultSet results;
     private ResultSetMetaData resultsMeta;
-
+    
+    // Constructor
     public FurnitureDb(String DBURL, String USERNAME, String PASSWORD){
         this.DBURL = DBURL;
         this.USERNAME = USERNAME;
@@ -69,7 +70,9 @@ public class FurnitureDb{
 
 
 
-    // Establish database connection
+    /** Method initializeConnection
+    * Establishes database connection
+    */
     public void initializeConnection(){
         try{
             dbConnect = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
@@ -79,9 +82,11 @@ public class FurnitureDb{
         }
     }
 
-    // Returns ArrayList "furnitureList" that contains Furniture objects
-    //  with only customer's desired category and desired type
-    //  (eg. list of standing desks)
+    /** Method furnitureFinder
+    * Returns ArrayList "furnitureList" that contains Furniture objects
+    *  with only customer's desired category and desired type
+    *  (eg. list of standing desks)
+    */
     public ArrayList<Furniture> furnitureFinder(String category, String type){
         category = category.toLowerCase();
         ArrayList<Furniture> furnitureList = new ArrayList<Furniture>();
@@ -128,10 +133,12 @@ public class FurnitureDb{
         return furnitureList;
     }
 
-    // Counter which returns either desired quantity or quantity available 
-    //  of desired furniture type and category 
-    // (eg. if customer wants 5 mesh chairs, but only 3 available, 3 will 
-    //  be returned)
+    /** Method componentCounter
+    * Counter which returns either desired quantity or quantity available 
+    *  of desired furniture type and category 
+    * (eg. if customer wants 5 mesh chairs, but only 3 available, 3 will 
+    *  be returned)
+    */
     public int componentCounter(ArrayList<Furniture> furnitureList, 
             int desiredQuant){
 
@@ -160,11 +167,13 @@ public class FurnitureDb{
         return availableQuant;
     }
 
-    // Return sets of manufacturers that sell desired types of furniture
-    // To be run at the beginning of the program, before any items are removed
-    //  from inventory, in order for clients to have contacts of manufacturers
-    //  who carry their desired furniture category, in case the quantity they
-    //  desire is not available
+    /** Method manufacturerSuggestion
+    * Return sets of manufacturers that sell desired types of furniture
+    * To be run at the beginning of the program, before any items are removed
+    *  from inventory, in order for clients to have contacts of manufacturers
+    *  who carry their desired furniture category, in case the quantity they
+    *  desire is not available
+    */
     public ArrayList<Manufacturer> manufacturerSuggestion(String category){
         ArrayList<Manufacturer> manufacturerList = new ArrayList<>();
         ArrayList<String> manuID = new ArrayList<>();
@@ -211,11 +220,13 @@ public class FurnitureDb{
         return manufacturerList;
     }
 
-    // Takes furnitureList containing furniture with correct category and type
-    // Creates new array with all possibilities of combinations that 
-    //  could fulfill the order
-    // Sends list to combinationSuccess to see if the combination has enough 
-    //  of each component to fulfill the order
+    /** Method findCombinations
+    * Takes furnitureList containing furniture with correct category and type
+    * Creates new array with all possibilities of combinations that 
+    *  could fulfill the order
+    * Sends list to combinationSuccess to see if the combination has enough 
+    *  of each component to fulfill the order
+    */
     public ArrayList<ArrayList<Furniture>> findCombinations(ArrayList<Furniture> 
                 furnitureList, int desiredQuant, int availableQuant){
 
@@ -261,12 +272,14 @@ public class FurnitureDb{
         return successfulComboList;        
     }
 
-    // The following method was based on code from
-    //  https://www.baeldung.com/java-combinations-algorithm
-    //  Section 4. Iterative Algorithm
-    //  by Chandra Prakash
-    // This code generates all possible combinations of indices
-    //  for the furnitureList array in the findCombinations method
+    /** Method combinationMaker
+    * The following method was based on code from
+    *  https://www.baeldung.com/java-combinations-algorithm
+    *  Section 4. Iterative Algorithm
+    *  by Chandra Prakash
+    * This code generates all possible combinations of indices
+    *  for the furnitureList array in the findCombinations method
+    */
     public List<int[]> combinationMaker(int availableQuant, int desiredQuantLoop){
         List<int[]> indexList = new ArrayList<>();
         int[] indexCombo = new int[desiredQuantLoop];
@@ -294,9 +307,11 @@ public class FurnitureDb{
         return indexList;
     }
 
-    // Checks to see if list possibleCombo has enough of each component to
-    //  fulfill the order (ie. enough legs, arms, bulbs, etc.)
-    // Returns true if enough of each component, returns false otherwise
+    /** Method combinationSuccess
+    * Checks to see if list possibleCombo has enough of each component to
+    *  fulfill the order (ie. enough legs, arms, bulbs, etc.)
+    * Returns true if enough of each component, returns false otherwise
+    */
     public boolean combinationSuccess(ArrayList<Furniture> possibleCombo, 
                 int desiredQuant){
 
@@ -315,9 +330,11 @@ public class FurnitureDb{
         return true;
     }
 
-    // Finds cheapest option from successful furniture combinations
-    //  returns array list of the cheapest choice
-    //  to be used to get IDs of furniture choices as well as price
+    /** Method priceCheck
+    * Finds cheapest option from successful furniture combinations
+    *  returns array list of the cheapest choice
+    *  to be used to get IDs of furniture choices as well as price
+    */
     public ArrayList<Furniture> priceCheck(ArrayList<ArrayList<Furniture>> 
                 allCombinations){
 
@@ -345,9 +362,12 @@ public class FurnitureDb{
         return allCombinations.get(index);
     }
 
-    // Removal of furniture items from database
-    // To be used once items have been placed in order form
-    //  and are no longer in inventory
+    /** Method removeFurnitureFromInventory
+    * Takes arguments of category and id
+    * Removes of furniture items from database
+    * To be used once items have been placed in order form
+    *  and are no longer in inventory
+    */
     public void removeFurnitureFromInventory(String category, String id){
         // Connection to database, and creation of SQL query to delete items
         //  from database
@@ -366,7 +386,13 @@ public class FurnitureDb{
             e.printStackTrace();
         }
     }
-
+ 
+    /** Method addFurnitureToInventory
+    * Takes arguments of furniture object and category
+    * Adds furniture items to database
+    * To be used once items have been placed in order form
+    *  and are no longer in inventory
+    */
     public void addFurnitureToInventory(Furniture furniture, String category){
         // Connection to database, and creation of SQL query
         ArrayList<String> componentNames = new ArrayList<String>();
@@ -435,10 +461,10 @@ public class FurnitureDb{
     }
 
     /**
-     * method close()
-     * closes objects of Connection and ResultSet
-     * catches SQLExceptions
-     * recieves no arguments and has no return value
+     * Method close()
+     * Closes objects of Connection and ResultSet
+     * Catches SQLExceptions
+     * Recieves no arguments and has no return value
      */
     public void close() {
         try {
