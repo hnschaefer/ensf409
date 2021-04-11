@@ -1,5 +1,7 @@
 /**
- @author 
+ @author Rajpreet Gill <a href="mailto:rajpreet.gill@ucalgary.ca">rajpreet.gill@ucalgary.ca</a>
+ @author Heidi Schaefer <a href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
+ @author Lubaba Sheikh <a href="mailto:lubaba.sheikh@ucalgary.ca">lubaba.sheikh@ucalgary.ca</a>
  @version 1.5
  @since 1.0
 */
@@ -18,10 +20,6 @@ public class Main {
         // Take user input
         userIO = new UserIO();
         userIO.userInput();
-        
-        // Create blank form
-        blank = new FileIO();
-        blank.blankOrderForm();
 
         // Create variables from user input
         String category = userIO.getCategory();
@@ -44,8 +42,11 @@ public class Main {
         
         // If no items can be fulfilled, end program
         if (maxQuantity == 0){
+            // Create blank form
+            blank = new FileIO();
+            blank.blankOrderForm();
+
             manufacturers = database.manufacturerSuggestion(category);
-            // ** send to FileIO for printing **
 
             System.out.println("The availability of " + type.toLowerCase() + 
                         " " + category + "s is 0.");
@@ -91,12 +92,12 @@ public class Main {
        
         // Finds the cheapest furniture combination to fulfill order
         ArrayList<Furniture> cheapestList = database.priceCheck(allCombinations);
-        
         int totalPrice = 0;
         for(int i = 0; i < cheapestList.size(); i++){
             totalPrice += cheapestList.get(i).getPrice();
         }
 
+        // Print lowest price to terminal
         System.out.println("The lowest price for " + desiredQuant + " " + 
                     type.toLowerCase() + " " + category + "(s) is $" + 
                     totalPrice + ".");
