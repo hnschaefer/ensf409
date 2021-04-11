@@ -9,7 +9,7 @@
  @since 1.0
 */
 
-/* Manufacturer is a class which creates objects of type Manufacturer
+/** Manufacturer is a class which creates objects of type Manufacturer
 *  All manufacturers have an ID, name, phone and province.
 */
 
