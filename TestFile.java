@@ -220,14 +220,36 @@ public void testBlankOrderFormContents()
 {
     FileIO fileObject= new FileIO();
     fileObject.blankOrderForm();
-    File file = new File("Blank Furniture Order Form.txt");
-    Sting filePath = file.getPath(); //put in filePath
-    String result = readFile(filePath);
-    String expResult = "Furniture Order Form\n" + "\nFacultyName:"+
+    String file = "Blank Furniture Order Form.txt";
+    //Sting filePath = file.getPath(); //put in filePath
+    //String pathPlusFileName= filePath + "Blank Furniture Order Form.txt"; 
+    String[] expected = "Furniture Order Form\n" + "\nFacultyName:"+
                         "\nContact:" +"\nDate:"+"\n"+"\nOriginal Request:"+"\n"+"\nItems Ordered"+
                         "\n"+"\nTotalPrice:";
-    assertEquals("The file contents are incorrect", expResult, result);
-} 
+                       
+    String[] check = readFile(addPath(file));
+    assertTrue("addDataElement() automatically writes when data is changed on existing file", Arrays.equals(expected, check));
+}
+// Add a directory path to a file
+public String addPath(String file) {
+    File path = new File(insert directory); //*****************INSERT DIRECTORY************************
+    File full = new File(path, file);
+    return full.getPath();
+}
+// Read in a specified file, given path+filename
+public String[] readFile(String fileAndPath) throws Exception {
+    BufferedReader file = new BufferedReader(new FileReader(fileAndPath));
+    String tmp = new String();
+    ArrayList<String> contents = new ArrayList<String>();
+
+    while ((tmp = file.readLine()) != null) {
+      contents.add(tmp);
+    }
+
+    file.close();
+    return contents.toArray(new String[contents.size()]);
+}
+
 @Test
 public void testBlankOrderFormMethod()
 {
@@ -317,6 +339,7 @@ public void testAddFurnitureToInventory()
         furnitureObject.addFurnitureToInventory(testObject, "chair");
         String expResult= "true";
         String result= "false";
+
         try{
             Statement myStmtOne = furnitureObject.getDbconnect().createStatement();
             ResultSet results = myStmtOne.executeQuery("SELECT id FROM chair WHERE id = " + "C9890");
