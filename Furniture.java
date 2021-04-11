@@ -9,7 +9,7 @@
  @since 1.0
 */
 
-/* Furniture is a class which creates objects of type Furniture
+/** Furniture is a class which creates objects of type Furniture
 *  All furniture categories share similar attributes of
 *   id, type, price and manuID
 *  However all categories have varying components
