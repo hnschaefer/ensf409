@@ -271,7 +271,7 @@ public void testBlankOrderFormMethod()
  * creates a new file.
  */
 @Test
-public void testCompleteOrderFormMethod()
+/*public void testCompleteOrderFormMethod()
 {
         FileIO fileObject= new FileIO();
         ArrayList<Boolean> components1 = new ArrayList<Boolean>();
@@ -293,6 +293,25 @@ public void testCompleteOrderFormMethod()
         "\n" + "Original Request: " + type + " " + category + ", " + quantity;
         
         assertEquals("The file contents are incorrect", expResult, result);
+}*/
+public void testCompleteOrderFormMethod()
+{
+    FileIO fileObject= new FileIO();
+    ArrayList<Boolean> components1 = new ArrayList<Boolean>();
+        components1.add(true);
+        components1.add(false);
+        components1.add(true);
+        components1.add(true);
+    fileObject.completeOrderForm(components1, need help with what to pass here);
+
+    File newfile = new File("Furniture Order Form.txt"); 
+    // **********CHANGE THE ADD TO HARDCODED VALUE****************
+    String[] expected = {"Furniture Order Form","","FacultyName: ADD",
+                        "Contact: ADD" ,"Date: ADD","","Original Request: ADD","","Items Ordered",
+                        "ID: ADD", "ID: ADD" , "", "TotalPrice: ADD"};
+    String[] check = readFile(addPath(newfile));
+    assertTrue("The file does not match the expected outcomes", Arrays.equals(expected, check));
+
 }
 /**The following test called testRemoveFurnitureMethod()
  * checks if the method called RemoveFurnitureMethod() successfully 
