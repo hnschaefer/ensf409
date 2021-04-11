@@ -18,7 +18,10 @@ public class Main {
     private static FurnitureDb database;
     private static ArrayList<Furniture> furnitureList;
     private static ArrayList<Manufacturer> manufacturers;
-
+    
+    /** Main method runs entire program
+    * No command-line argument necessary
+    */
     public static void main (String[] args){   
         // Take user input
         userIO = new UserIO();
