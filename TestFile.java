@@ -5,8 +5,8 @@
   href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
  @author Lubaba Sheikh <a 
   href="mailto:lubaba.sheikh@ucalgary.ca">lubaba.sheikh@ucalgary.ca</a>
+
  @version 1.9
- 
  @since 1.0
 */
 
@@ -27,7 +27,7 @@ import jdk.jfr.Timestamp;
 
 public class TestFile {
     /** The following method checks if the UserIO constructor
-    *   initializes the data members inside the Class Manufacturer.
+    * initializes the data members inside the Class Manufacturer.
     */
     @Test
     public void checkUserIOConstructor()
@@ -222,49 +222,108 @@ public class TestFile {
     /**The following test called testBlankOrderFormContents()
      * checks if the method called blankOrderForm successfully 
      * produces the correct contents in the file. 
+     * @throws Exception
      */
-    @Test
-    public void testBlankOrderFormContents()
+    /* @Test
+    public void testBlankOrderFormContents() throws Exception
     {
         FileIO fileObject= new FileIO();
         fileObject.blankOrderForm();
         String file = "Blank Furniture Order Form.txt";
         //Sting filePath = file.getPath(); //put in filePath
         //String pathPlusFileName= filePath + "Blank Furniture Order Form.txt"; 
-        String[] expected = {"Furniture Order Form","","FacultyName:",
-                            "Contact:" ,"Date:","","Original Request:","","Items Ordered",
-                            ""+"TotalPrice:"};
-        String[] check = readFile(addPath(file));
-        assertTrue("The file does not match the expected outcomes", Arrays.equals(expected, check));
-    }
-    // Add a directory path to a file
-    public String addPath(String file) 
-    {
-        //File path = new File(insert directory);
-        File full = new File(file);
-        return full.getPath();
-    }
-    // Read in a specified file, given path+filename
-    public String[] readFile(String fileAndPath) throws Exception 
-    {
-        BufferedReader file = new BufferedReader(new FileReader(fileAndPath));
-        String tmp = new String();
-        ArrayList<String> contents = new ArrayList<String>();
+        String expected = "Furniture Order Form\n" + "\nFacultyName:"+
+        "\nContact:" +"\nDate:"+"\n"+"\nOriginal Request:"+"\n"+"\nItems Ordered"+
+        "\n"+"\nTotalPrice:";
+        String check = readFile(addPath(file));
+        assertEquals("The file does not match the expected outcomes",expected, check);
+    } */
 
-        while ((tmp = file.readLine()) != null) 
+
+    @Test
+    public void testBlankOrderFormContents() throws Exception
+    {
+        FileIO fileObject= new FileIO();
+        fileObject.blankOrderForm();
+        
+        StringBuffer expectedForm = new StringBuffer("Furniture Order Form\n" + "\nFacultyName:"+
+                            "\nContact:" +"\nDate:"+"\n"+"\nOriginal Request:"+"\n"+"\nItems Ordered"+
+                            "\n"+"\nTotalPrice:");
+        File newfile = new File("Expected Blank Furniture Order Form.txt"); // created a File object called newfile
+        try
         {
-        contents.add(tmp);
+            if (!newfile.exists()) 
+            {
+                newfile.createNewFile();
+            } 
+            PrintWriter pw = new PrintWriter(newfile);
+            pw.println(expectedForm);
+            pw.close();
+        } catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        file.close();
-        return contents.toArray(new String[contents.size()]);
+
+        BufferedReader reader1 = new BufferedReader(new FileReader("Blank Furniture Order Form.txt"));
+        BufferedReader reader2 = new BufferedReader(new FileReader("Expected Blank Furniture Order Form.txt"));
+        String l1 = reader1.readLine();
+        String l2 = reader2.readLine();
+        boolean areEqual = true;
+        int lineNum = 1;
+        while (l1 != null || l2 != null)
+        {
+            if(l1 == null || l2 == null)
+            {
+                areEqual = false;
+                 
+                break;
+            }
+            else if(! l1.equalsIgnoreCase(l2))
+            {
+                areEqual = false;
+                 
+                break;
+            } 
+            l1 = reader1.readLine();
+             
+            l2 = reader2.readLine();
+             
+            lineNum++;
+        }
+        assertTrue("The file does not match the expected outcomes",areEqual);
     }
+
     
 
     /**The following test called testCompleteOrderFormMethod()
      * checks if the method called completeOrderForm successfully 
-     * creates a new file and tests if the contents in that
-     * file matches the expected output of contents. 
+     * creates a new file.
      */
+    /*@Test
+    public void testCompleteOrderFormMethod()
+    {
+            FileIO fileObject= new FileIO();
+            ArrayList<Boolean> components1 = new ArrayList<Boolean>();
+            components1.add(true);
+            components1.add(false);
+            components1.add(true);
+            components1.add(true);
+            Furniture testObject = new Furniture("C0942", "Mesh", components1, 175, "005");
+            ArrayList <Furniture> list = new ArrayList<>();
+            list.add(testObject);
+            fileObject.completeOrderForm(list, 150, "Mesh", "2");
+            String category= "chair";
+            String type= "mesh";
+            int quantity= 2;
+            File file = new File("Furniture Order Form.txt");
+            String filePath = file.getPath(); //put in filePath
+            String result = readFile(filePath);
+            String expResult= "\n" + "\nFacultyName:" + "\nContact:" +"\nDate:" + 
+            "\n" + "Original Request: " + type + " " + category + ", " + quantity;
+            
+            assertEquals("The file contents are incorrect", expResult, result);
+    }*/
     @Test
     public void testCompleteOrderFormMethod()
     {
