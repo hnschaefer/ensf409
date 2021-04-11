@@ -212,7 +212,7 @@ public void testBlankOrderFormMethod()
 }
 
 /**The following test called testBlankOrderFormContents()
- * checks if the method called blankOrderFrom successfully 
+ * checks if the method called blankOrderForm successfully 
  * produces the correct contents in the file. 
  */
  @Test
@@ -227,7 +227,7 @@ public void testBlankOrderFormContents()
                         "Contact:" ,"Date:","","Original Request:","","Items Ordered",
                         ""+"TotalPrice:"};
     String[] check = readFile(addPath(file));
-    assertTrue("addDataElement() automatically writes when data is changed on existing file", Arrays.equals(expected, check));
+    assertTrue("The file does not match the expected outcomes", Arrays.equals(expected, check));
 }
 // Add a directory path to a file
 public String addPath(String file) 
