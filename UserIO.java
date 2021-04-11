@@ -1,7 +1,11 @@
 /**
- @author 
+ @author Rajpreet Gill <a 
+  href="mailto:rajpreet.gill@ucalgary.ca">rajpreet.gill@ucalgary.ca</a>
+ @author Heidi Schaefer <a 
+  href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
+ @author Lubaba Sheikh <a 
+  href="mailto:lubaba.sheikh@ucalgary.ca">lubaba.sheikh@ucalgary.ca</a>
  @version 1.6
- 
  @since 1.0
 */
 
