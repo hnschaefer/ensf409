@@ -1,8 +1,16 @@
 /**
- @author 
- @version 1.0
+ @author Rajpreet Gill <a href="mailto:rajpreet.gill@ucalgary.ca">rajpreet.gill@ucalgary.ca</a>
+ @author Heidi Schaefer <a href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
+ @author Lubaba Sheikh <a href="mailto:lubaba.sheikh@ucalgary.ca">lubaba.sheikh@ucalgary.ca</a>
+ @version 1.9
  
  @since 1.0
+*/
+
+/*
+class TestFile has 17 tests which tests various functions
+of the files including FurnitureDb, FileIO, Furniture, Main, Manufacturer
+as well as UserIO files.
 */
 
 package edu.ucalgary.ensf409;
@@ -12,14 +20,11 @@ import org.junit.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
-//import org.junit.contrib.java.lang.system.ExpectedSystemExit;
-
-//import jdk.internal.jshell.tool.MessageHandler;
 import jdk.jfr.Timestamp;
 
 public class TestFile {
     /** The following method checks if the UserIO constructor
-    * initializes the data members inside the Class Manufacturer.
+    *   initializes the data members inside the Class Manufacturer.
     */
     @Test
     public void checkUserIOConstructor()
@@ -254,32 +259,9 @@ public class TestFile {
 
     /**The following test called testCompleteOrderFormMethod()
      * checks if the method called completeOrderForm successfully 
-     * creates a new file.
+     * creates a new file and tests if the contents in that
+     * file matches the expected output of contents. 
      */
-    /*@Test
-    public void testCompleteOrderFormMethod()
-    {
-            FileIO fileObject= new FileIO();
-            ArrayList<Boolean> components1 = new ArrayList<Boolean>();
-            components1.add(true);
-            components1.add(false);
-            components1.add(true);
-            components1.add(true);
-            Furniture testObject = new Furniture("C0942", "Mesh", components1, 175, "005");
-            ArrayList <Furniture> list = new ArrayList<>();
-            list.add(testObject);
-            fileObject.completeOrderForm(list, 150, "Mesh", "2");
-            String category= "chair";
-            String type= "mesh";
-            int quantity= 2;
-            File file = new File("Furniture Order Form.txt");
-            String filePath = file.getPath(); //put in filePath
-            String result = readFile(filePath);
-            String expResult= "\n" + "\nFacultyName:" + "\nContact:" +"\nDate:" + 
-            "\n" + "Original Request: " + type + " " + category + ", " + quantity;
-            
-            assertEquals("The file contents are incorrect", expResult, result);
-    }*/
     @Test
     public void testCompleteOrderFormMethod()
     {
