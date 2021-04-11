@@ -201,7 +201,7 @@ public void checkComponentCounter()
  * checks if the method called blankOrderFrom successfully 
  * creates a new file.
  */
-@Test
+/*@Test
 public void testBlankOrderFormMethod()
 {
         FileIO fileObject = new FileIO();
@@ -209,7 +209,7 @@ public void testBlankOrderFormMethod()
         
         File file = new File("Blank Furniture Order Form.txt"); // **REMEMBER TO PUT IN THE PATH**
         assertTrue(file.exists());
-}
+} */
 
 /**The following test called testBlankOrderFormContents()
  * checks if the method called blankOrderForm successfully 
@@ -220,7 +220,7 @@ public void testBlankOrderFormContents()
 {
     FileIO fileObject= new FileIO();
     fileObject.blankOrderForm();
-    File file = new File ("Blank Furniture Order Form.txt");
+    String file = "Blank Furniture Order Form.txt";
     //Sting filePath = file.getPath(); //put in filePath
     //String pathPlusFileName= filePath + "Blank Furniture Order Form.txt"; 
     String[] expected = {"Furniture Order Form","","FacultyName:",
@@ -250,6 +250,10 @@ public String[] readFile(String fileAndPath) throws Exception
     file.close();
     return contents.toArray(new String[contents.size()]);
 }
+/**The following test called testBlankOrderFormMethod()
+ * checks if the method called blankOrderFrom successfully 
+ * creates a new file.
+ */
 @Test
 public void testBlankOrderFormMethod()
 {
@@ -270,8 +274,8 @@ public void testBlankOrderFormMethod()
  * checks if the method called completeOrderForm successfully 
  * creates a new file.
  */
-@Test
-/*public void testCompleteOrderFormMethod()
+/*@Test
+public void testCompleteOrderFormMethod()
 {
         FileIO fileObject= new FileIO();
         ArrayList<Boolean> components1 = new ArrayList<Boolean>();
@@ -294,6 +298,7 @@ public void testBlankOrderFormMethod()
         
         assertEquals("The file contents are incorrect", expResult, result);
 }*/
+@Test
 public void testCompleteOrderFormMethod()
 {
     FileIO fileObject= new FileIO();
@@ -304,12 +309,12 @@ public void testCompleteOrderFormMethod()
         components1.add(true);
     fileObject.completeOrderForm(components1, need help with what to pass here);
 
-    File newfile = new File("Furniture Order Form.txt"); 
+    String newFile= "Furniture Order Form.txt"; 
     // **********CHANGE THE ADD TO HARDCODED VALUE****************
     String[] expected = {"Furniture Order Form","","FacultyName: ADD",
                         "Contact: ADD" ,"Date: ADD","","Original Request: ADD","","Items Ordered",
                         "ID: ADD", "ID: ADD" , "", "TotalPrice: ADD"};
-    String[] check = readFile(addPath(newfile));
+    String[] check = readFile(addPath(newFile));
     assertTrue("The file does not match the expected outcomes", Arrays.equals(expected, check));
 
 }
@@ -328,7 +333,7 @@ public void testRemoveFurnitureMethod()
         String result = "true";
         try{
             Statement myStmtOne = furnitureObject.getDbconnect().createStatement();
-            ResultSet results = myStmtOne.executeQuery("SELECT id FROM chair WHERE id = " + "C9890");
+            ResultSet results = myStmtOne.executeQuery("SELECT id FROM chair WHERE id ='C9890'");
             if(!(results.next()))
             {
                 expResult = "true";
@@ -361,7 +366,7 @@ public void testAddFurnitureToInventory()
 
         try{
             Statement myStmtOne = furnitureObject.getDbconnect().createStatement();
-            ResultSet results = myStmtOne.executeQuery("SELECT id FROM chair WHERE id = " + "C9890");
+            ResultSet results = myStmtOne.executeQuery("SELECT id FROM chair WHERE id ='C9890'");
         if((results.next()))
         {
             result="true";
