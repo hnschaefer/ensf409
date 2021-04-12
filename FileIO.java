@@ -1,17 +1,18 @@
-package edu.ucalgary.ensf409;
-import java.util.ArrayList;
-
 /**
  @author Rajpreet Gill <a 
-    href="mailto:rajpreet.gill@ucalgary.ca">rajpreet.gill@ucalgary.ca</a>
+  href="mailto:rajpreet.gill@ucalgary.ca">rajpreet.gill@ucalgary.ca</a>
  @author Heidi Schaefer <a 
-    href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
+  href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
  @author Lubaba Sheikh <a 
-    href="mailto:lubaba.sheikh@ucalgary.ca">lubaba.sheikh@ucalgary.ca</a>
+  href="mailto:lubaba.sheikh@ucalgary.ca">lubaba.sheikh@ucalgary.ca</a>
+
  @version 1.4
  @since 1.0
 */
 
+
+package edu.ucalgary.ensf409;
+import java.util.ArrayList;
 import java.io.*;
 
 public class FileIO{
