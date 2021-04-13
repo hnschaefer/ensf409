@@ -5,7 +5,6 @@
   href = "mailto:heidi.schaefer@ucalgary.ca">heidi.schaefer@ucalgary.ca</a>
  @author Lubaba Sheikh <a 
   href="mailto:lubaba.sheikh@ucalgary.ca">lubaba.sheikh@ucalgary.ca</a>
-
  @version 1.9
  @since 1.0
 */
@@ -95,7 +94,6 @@ public class TestFile {
     /** The following method checks if the Manufacturer constructor
     * initializes the data members inside the Class Manufacturer.
     */
-
     @Test
     public void checkManufacturerConstructor()
     {
@@ -222,24 +220,7 @@ public class TestFile {
     /**The following test called testBlankOrderFormContents()
      * checks if the method called blankOrderForm successfully 
      * produces the correct contents in the file. 
-     * @throws Exception
      */
-    /* @Test
-    public void testBlankOrderFormContents() throws Exception
-    {
-        FileIO fileObject= new FileIO();
-        fileObject.blankOrderForm();
-        String file = "Blank Furniture Order Form.txt";
-        //Sting filePath = file.getPath(); //put in filePath
-        //String pathPlusFileName= filePath + "Blank Furniture Order Form.txt"; 
-        String expected = "Furniture Order Form\n" + "\nFacultyName:"+
-        "\nContact:" +"\nDate:"+"\n"+"\nOriginal Request:"+"\n"+"\nItems Ordered"+
-        "\n"+"\nTotalPrice:";
-        String check = readFile(addPath(file));
-        assertEquals("The file does not match the expected outcomes",expected, check);
-    } */
-
-
     @Test
     public void testBlankOrderFormContents() throws Exception
     {
@@ -300,32 +281,8 @@ public class TestFile {
      * checks if the method called completeOrderForm successfully 
      * creates a new file.
      */
-    /*@Test
-    public void testCompleteOrderFormMethod()
-    {
-            FileIO fileObject= new FileIO();
-            ArrayList<Boolean> components1 = new ArrayList<Boolean>();
-            components1.add(true);
-            components1.add(false);
-            components1.add(true);
-            components1.add(true);
-            Furniture testObject = new Furniture("C0942", "Mesh", components1, 175, "005");
-            ArrayList <Furniture> list = new ArrayList<>();
-            list.add(testObject);
-            fileObject.completeOrderForm(list, 150, "Mesh", "2");
-            String category= "chair";
-            String type= "mesh";
-            int quantity= 2;
-            File file = new File("Furniture Order Form.txt");
-            String filePath = file.getPath(); //put in filePath
-            String result = readFile(filePath);
-            String expResult= "\n" + "\nFacultyName:" + "\nContact:" +"\nDate:" + 
-            "\n" + "Original Request: " + type + " " + category + ", " + quantity;
-            
-            assertEquals("The file contents are incorrect", expResult, result);
-    }*/
     @Test
-    public void testCompleteOrderFormMethod()
+    public void testCompleteOrderFormMethod() throws Exception
     {
         FileIO fileObject= new FileIO();
         ArrayList<Boolean> components1 = new ArrayList<Boolean>();
@@ -333,16 +290,61 @@ public class TestFile {
             components1.add(false);
             components1.add(true);
             components1.add(true);
-        fileObject.completeOrderForm(components1, need help with what to pass here);
+        fileObject.completeOrderForm(components1, 100, "Mesh", "chair", 1, 1);
+        String type = "Mesh";
+        String category= "chair";
+        int originalQuant= 1;
+        int availableQuant= 1;
+        int totalPrice= 100;
+        StringBuffer expectedForm = new StringBuffer("Furniture Order Form\n" + "\nFacultyName:"+
+                                                    "\nContact:" +"\nDate:"+"\n"+"Original Request: "+ 
+                                                    type + " " + category + ", " + originalQuant + "\n" + 
+                                                    "Available: " + type + " " + category + ", " + availableQuant + 
+                                                    "\n" + "Items Ordered" + "\n" + "Total Price: $" + totalPrice);
+                            
+        File newfile = new File("Expected Furniture Order Form.txt"); // created a File object called newfile
+        try
+        {
+            if (!newfile.exists()) 
+            {
+                newfile.createNewFile();
+            } 
+            PrintWriter pw = new PrintWriter(newfile);
+            pw.println(expectedForm);
+            pw.close();
+        } catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-        String newFile= "Furniture Order Form.txt"; 
-        // **********CHANGE THE ADD TO HARDCODED VALUE****************
-        String[] expected = {"Furniture Order Form","","FacultyName: ADD",
-                            "Contact: ADD" ,"Date: ADD","","Original Request: ADD","","Items Ordered",
-                            "ID: ADD", "ID: ADD" , "", "TotalPrice: ADD"};
-        String[] check = readFile(addPath(newFile));
-        assertTrue("The file does not match the expected outcomes", Arrays.equals(expected, check));
-
+        BufferedReader reader1 = new BufferedReader(new FileReader("Furniture Order Form.txt"));
+        BufferedReader reader2 = new BufferedReader(new FileReader("Expected Furniture Order Form.txt"));
+        String l1 = reader1.readLine();
+        String l2 = reader2.readLine();
+        boolean areEqual = true;
+        int lineNum = 1;
+        while (l1 != null || l2 != null)
+        {
+            if(l1 == null || l2 == null)
+            {
+                areEqual = false;
+                 
+                break;
+            }
+            else if(! l1.equalsIgnoreCase(l2))
+            {
+                areEqual = false;
+                 
+                break;
+            } 
+            l1 = reader1.readLine();
+             
+            l2 = reader2.readLine();
+             
+            lineNum++;
+        }
+        assertTrue("The file does not match the expected outcomes",areEqual);
     }
     /**The following test called testRemoveFurnitureMethod()
      * checks if the method called RemoveFurnitureMethod() successfully 
