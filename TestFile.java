@@ -284,18 +284,33 @@ public class TestFile {
     @Test
     public void testCompleteOrderFormMethod() throws Exception
     {
+        private static FurnitureDb database= new FurnitureDb("jdbc:mysql://localhost/inventory", "scm", 
+                    "ensf409");
+        database.initializeConnection();
         FileIO fileObject= new FileIO();
-        ArrayList<Boolean> components1 = new ArrayList<Boolean>();
-            components1.add(true);
-            components1.add(false);
-            components1.add(true);
-            components1.add(true);
-        fileObject.completeOrderForm(components1, 100, "Mesh", "chair", 1, 1);
+        String category = "chair";
         String type = "Mesh";
-        String category= "chair";
-        int originalQuant= 1;
-        int availableQuant= 1;
-        int totalPrice= 100;
+        int desiredQuant = 1;
+        int availableQuant =1;
+        int originalQuant =1; 
+        int totalPrice= 200;
+        private static ArrayList<Furniture> furnitureList = database.furnitureFinder(category, type);
+
+        // Finds all combinations
+        ArrayList<ArrayList<Furniture>> allCombinations = 
+                    database.findCombinations(furnitureList, desiredQuant, 
+                    furnitureList.size());
+        
+        // Finds the cheapest furniture combination to fulfill order
+        ArrayList<Furniture> cheapestList = database.priceCheck(allCombinations);
+        int totalPrice = 0;
+        for(int i = 0; i < cheapestList.size(); i++){
+            totalPrice += cheapestList.get(i).getPrice();
+        }
+        // calling to create completeOrderForm now
+        fileObject.completeOrderForm(cheapestList, totalPrice, type, category, 
+                                    originalQuant, desiredQuant);
+    
         StringBuffer expectedForm = new StringBuffer("Furniture Order Form\n" + "\nFacultyName:"+
                                                     "\nContact:" +"\nDate:"+"\n"+"Original Request: "+ 
                                                     type + " " + category + ", " + originalQuant + "\n" + 
