@@ -169,22 +169,23 @@ public class TestFile {
         Furniture furnitureList0 = null;
         for (int i = 0; i < furnitureList.size(); i++)
         {
-            if (furnitureList.get(i).id.equals("C0942"))
+            if (furnitureList.get(i).getId().equals("C0942"))
             {
-                furnitureList0 = furnitureList.get(i);
+                furnitureList0 = new Furniture(furnitureList.get(i).getId(), furnitureList.get(i).getType(),furnitureList.get(i).getComponents(),
+                                                furnitureList.get(i).getPrice(), furnitureList.get(i).getManuId());
                 break;
             }
         }
-        
+
         ArrayList<Boolean> components1 = new ArrayList<Boolean>();
         components1.add(true);
         components1.add(false);
         components1.add(true);
         components1.add(true);
 
-        Furniture testObject = new Furniture("C0942", "Mesh", components1, 175, "005");
+        Furniture expObject = new Furniture("C0942", "Mesh", components1, 175, "005");
         furnitureObject.close();
-        assertEquals("The method called checkFurnitureFinder inside the class FurnitureDb does not return an arraylist.", testObject, furnitureList0);
+        assertEquals("The expected output doesnot match the result output.", expObject.getId(), furnitureList0.getId());
     }
 
     /**The following test called checkComponentCounter()
@@ -198,7 +199,6 @@ public class TestFile {
         furnitureObject.initializeConnection();
         ArrayList<Furniture> furnitureList = furnitureObject.furnitureFinder("chair", "Mesh");
         int counter = furnitureObject.componentCounter(furnitureList, 3);
-        System.out.println(counter);
         furnitureObject.close();
         assertEquals("The method componentCounter does not return correct value.", 1, counter);
     }
@@ -220,6 +220,7 @@ public class TestFile {
     /**The following test called testBlankOrderFormContents()
      * checks if the method called blankOrderForm successfully 
      * produces the correct contents in the file. 
+     * The following test code was inspired from this website: https://javaconceptoftheday.com/compare-two-text-files-in-java/
      */
     @Test
     public void testBlankOrderFormContents() throws Exception
@@ -272,6 +273,9 @@ public class TestFile {
              
             lineNum++;
         }
+
+        reader1.close();
+        reader2.close();
         assertTrue("The file does not match the expected outcomes",areEqual);
     }
 
@@ -280,21 +284,22 @@ public class TestFile {
     /**The following test called testCompleteOrderFormMethod()
      * checks if the method called completeOrderForm successfully 
      * creates a new file.
+     * The following test code was inspired from this website: https://javaconceptoftheday.com/compare-two-text-files-in-java/
      */
     @Test
     public void testCompleteOrderFormMethod() throws Exception
     {
-        private static FurnitureDb database= new FurnitureDb("jdbc:mysql://localhost/inventory", "scm", 
+        FurnitureDb database= new FurnitureDb("jdbc:mysql://localhost/inventory", "ENSF409", 
                     "ensf409");
         database.initializeConnection();
         FileIO fileObject= new FileIO();
         String category = "chair";
         String type = "Mesh";
         int desiredQuant = 1;
-        int availableQuant =1;
-        int originalQuant =1; 
-        int totalPrice= 200;
-        private static ArrayList<Furniture> furnitureList = database.furnitureFinder(category, type);
+        int availableQuant = 1;
+        int originalQuant = 1; 
+        int totalPrice = 200;
+        ArrayList<Furniture> furnitureList = database.furnitureFinder(category, type);
 
         // Finds all combinations
         ArrayList<ArrayList<Furniture>> allCombinations = 
@@ -303,19 +308,20 @@ public class TestFile {
         
         // Finds the cheapest furniture combination to fulfill order
         ArrayList<Furniture> cheapestList = database.priceCheck(allCombinations);
-        int totalPrice = 0;
+        int tPrice = 0;
         for(int i = 0; i < cheapestList.size(); i++){
-            totalPrice += cheapestList.get(i).getPrice();
+            tPrice += cheapestList.get(i).getPrice();
         }
         // calling to create completeOrderForm now
-        fileObject.completeOrderForm(cheapestList, totalPrice, type, category, 
+        fileObject.completeOrderForm(cheapestList, tPrice, type, category, 
                                     originalQuant, desiredQuant);
     
         StringBuffer expectedForm = new StringBuffer("Furniture Order Form\n" + "\nFacultyName:"+
-                                                    "\nContact:" +"\nDate:"+"\n"+"Original Request: "+ 
+                                                    "\nContact:" +"\nDate:"+"\n"+"\nOriginal Request: "+ 
                                                     type + " " + category + ", " + originalQuant + "\n" + 
-                                                    "Available: " + type + " " + category + ", " + availableQuant + 
-                                                    "\n" + "Items Ordered" + "\n" + "Total Price: $" + totalPrice);
+                                                    "\nAvailable: " + type + " " + category + ", " + availableQuant + 
+                                                    "\n" + "\nItems Ordered" + "\nID: C6748" + "\nID: C8138" + "\nID: C9890"+ 
+                                                    "\n" + "\nTotal Price: $" + totalPrice);
                             
         File newfile = new File("Expected Furniture Order Form.txt"); // created a File object called newfile
         try
@@ -359,6 +365,9 @@ public class TestFile {
              
             lineNum++;
         }
+                 
+        reader1.close();
+        reader2.close();
         assertTrue("The file does not match the expected outcomes",areEqual);
     }
     /**The following test called testRemoveFurnitureMethod()
