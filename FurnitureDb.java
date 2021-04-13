@@ -378,7 +378,7 @@ public class FurnitureDb{
             stmt.setString(1, id);
 
             int rows = stmt.executeUpdate();
-            System.out.println("Rows affected: " + rows);
+            //System.out.println("Rows affected: " + rows);
 
             stmt.close();
         }
@@ -430,7 +430,7 @@ public class FurnitureDb{
                 }
             }
             queryBuilder.append("?,?,?,?)");
-            System.out.println(queryBuilder);
+            //System.out.println(queryBuilder);
             
             String query = queryBuilder.toString();
             PreparedStatement stmt = dbConnect.prepareStatement(query);
