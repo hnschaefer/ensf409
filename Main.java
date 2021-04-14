@@ -9,6 +9,10 @@
  @since 1.0
 */
 
+/** Class main runs entire project
+ * by calling classes UserIO, FileIO, and FurnitureDb
+ */
+
 package edu.ucalgary.ensf409;
 import java.util.*;
 
@@ -54,6 +58,7 @@ public class Main {
 
             manufacturers = database.manufacturerSuggestion(category);
 
+            // Output message to terminal
             System.out.println("The availability of " + type.toLowerCase() + 
                         " " + category + "s is 0.");
             System.out.println();
@@ -73,6 +78,7 @@ public class Main {
         else if(maxQuantity < desiredQuant){
             manufacturers = database.manufacturerSuggestion(category);
 
+            // Output message to terminal
             System.out.println("The availability of " + type.toLowerCase() + 
                         " " + category + "s is " + maxQuantity + ".");
             System.out.println("An order form will be completed for " + 
@@ -114,12 +120,9 @@ public class Main {
                     originalQuant, desiredQuant);
 
         // Remove furniture from database after order form is printed
-        // Commented out for now to avoid removing test objects from database
-        /*
         for(int i = 0; i < cheapestList.size(); i++){
             database.removeFurnitureFromInventory(category, 
-                        cheapestList.get(i).id);
+                        cheapestList.get(i).getId());
         }
-        */
     }   
 }
